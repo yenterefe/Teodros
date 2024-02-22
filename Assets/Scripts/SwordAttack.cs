@@ -10,7 +10,7 @@ public class SwordAttack : MonoBehaviour
     private GameObject player;
     private Player playerScript;
 
-    [SerializeField] float cancelSpeed = 0.75f;
+    [SerializeField] float cancelAttackSpeed;
     [SerializeField] float swordDamage = 0.5f;
     [SerializeField] float gunDamage = 0.75f;
 
@@ -19,8 +19,9 @@ public class SwordAttack : MonoBehaviour
     private string gameObjectName;
 
     private bool attack= false;
+    private bool secondCombo;
 
-    private float enemyLife = 5;
+    private float enemyLife = 5f;
 
     private void Awake()
     {
@@ -40,14 +41,20 @@ public class SwordAttack : MonoBehaviour
     {
         
         input.OnLightAttackPerformed += AttackPerformed;
-        input.OnLightAttackCanceled += AttackCanceled;
+        //input.OnLightAttackCanceled += AttackCanceled;
     }
 
     private void Update()
     {
         transform.LookAt(player.transform);
 
-        Debug.Log(enemyLife);
+        Debug.Log("attack is " + attack);
+
+        Debug.Log("enemy life is " + enemyLife);
+
+        Debug.Log("Is second combo active " + secondCombo);
+
+        Debug.Log( "Cancel speed is " + cancelAttackSpeed);
 
         bool takeDamage = playerScript.EnemyDamage();
 
@@ -65,18 +72,35 @@ public class SwordAttack : MonoBehaviour
     private void AttackPerformed(object receiver, EventArgs e)
     {
         attack = true;
+
+        secondCombo = playerScript.SecondComboDamage();
+
+        if (secondCombo == true)
+        {
+            
+            cancelAttackSpeed = 2.4f;
+        }
+
+        //if (secondCombo != true)
+        {
+
+            //cancelAttackSpeed = 1.5f;
+        }
+
+        Invoke("CancelAttack", cancelAttackSpeed);
     }
 
-    private void AttackCanceled(object receiver, EventArgs e)
+    /*private void AttackCanceled(object receiver, EventArgs e)
     {
         // event cancel so fast that it remains false so I used invoke to slow it down 
         Invoke("CancelAttack", cancelSpeed);
-    }
+    }*/
 
     private void CancelAttack()
     {
         attack=false;   
     }
+
 
     private void OnTriggerEnter(Collider other)
     {

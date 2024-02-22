@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     private float buttonPressed = 0;
     private bool shotFired= false;
     private bool enemyTakeDamage= false;
+    private bool secondCombo; 
 
     [SerializeField] private LayerMask aimColliderMask = new LayerMask();
 
@@ -43,8 +44,9 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject aim;
     [SerializeField] private GameObject noEnemyCrossHair;
     [SerializeField] private GameObject enemyCrossHair;
-
-
+    [SerializeField] private GameObject rifle;
+    [SerializeField] private GameObject target;
+    //[SerializeField] private Transform debugTransform;
     private string gameObjectName;
 
     private void Awake()
@@ -60,13 +62,14 @@ public class Player : MonoBehaviour
         gameInput.OnLightAttackPerformed += LightAttackPerformed;
         gameInput.OnRifleFirePerformed += ShotFiredPerformed;
         gameInput.OnRifleFireCanceled += ShotNotFired;
-
     }
 
     private void Update()
     {
-        Debug.Log(shotFired);
-        Debug.Log(gameObjectName);
+        Debug.Log("Is shot fired " + shotFired);
+        Debug.Log("Name of object aimed at " + gameObjectName);
+
+
     }
 
     private void FixedUpdate()
@@ -121,6 +124,7 @@ public class Player : MonoBehaviour
         return currentAnimationBlendVector;
     }
 
+    // See if you need this later
     public bool SecondCombo()
     {
         return activateSecondCombo;
@@ -163,11 +167,12 @@ public class Player : MonoBehaviour
 
             RaycastHit hit;
 
-            if(Physics.Raycast(aim.transform.position, transform.TransformDirection(Vector3.forward), out hit, maxDistance, aimColliderMask))
-            { 
-                 gameObjectName= hit.collider.gameObject.name.ToString();
-
-                if(hit.collider.gameObject.name == "Enemy")
+            Vector2 centerScreen = new Vector2(Screen.width/2, Screen.height/2);
+            Ray ray = cam.ScreenPointToRay(centerScreen);
+            
+            if(Physics.Raycast(ray, out hit, maxDistance, aimColliderMask))
+            {
+                if (hit.collider.gameObject.name == "Enemy")
                 {
                     noEnemyCrossHair.SetActive(false);
                     enemyCrossHair.SetActive(true);
@@ -178,7 +183,6 @@ public class Player : MonoBehaviour
                     enemyCrossHair.SetActive(false);
                     noEnemyCrossHair.SetActive(true);
                 }
-
 
                 if (hit.collider.gameObject.name == "Enemy" && shotFired == true)
                 {
@@ -197,7 +201,7 @@ public class Player : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            bool secondCombo = buttonPressed > 1;
+            secondCombo = buttonPressed > 1;
 
             if (secondCombo == true)
             {
@@ -210,7 +214,6 @@ public class Player : MonoBehaviour
                     timer = 0;
                 }
             }
-            //
 
             else if (activateSecondCombo == false)
             {
@@ -240,6 +243,11 @@ public class Player : MonoBehaviour
     public bool EnemyDamage()
     {
         return enemyTakeDamage;
+    }
+
+    public bool SecondComboDamage()
+    {
+        return secondCombo;
     }
 
 }

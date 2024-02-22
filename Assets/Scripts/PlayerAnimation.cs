@@ -17,6 +17,9 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] private GameObject sheatedSword;
     [SerializeField] private GameObject sword;
 
+    [SerializeField] private GameObject shoulderRifle;
+    [SerializeField] private GameObject rifle;
+
     [SerializeField] private float activateSheatedSwordTimer = 1f;
     [SerializeField] private float activateSwordTimer = 1.5f;
 
@@ -94,6 +97,12 @@ public class PlayerAnimation : MonoBehaviour
 
     private void RifleModeActivated(object receiver, EventArgs e)
     {
+        shoulderRifle.SetActive(false);
+        rifle.SetActive(true);
+
+        sword.SetActive(false);
+        sheatedSword.SetActive(true);
+
         rifleAttack = true;
         playerAnim.SetTrigger(_WITHDRAWRIFLE);
         playerAnim.SetBool(_ATTACKSWORDMOVEMENT, false);
@@ -124,6 +133,9 @@ public class PlayerAnimation : MonoBehaviour
     private void LightAttack(object receiver, EventArgs e)
     {
         {
+            rifle.SetActive(false);
+            shoulderRifle.SetActive(true);
+
             sheatedSword.SetActive(false);
 
             sword.SetActive(true);
@@ -145,7 +157,7 @@ public class PlayerAnimation : MonoBehaviour
    
     private void  AimRifle (object receiver, EventArgs e)
     {
-        // Gotta fix virtual camera
+
         aimCamera.SetActive(true);
 
         if (rifleAttack==true)
@@ -206,6 +218,8 @@ public class PlayerAnimation : MonoBehaviour
         if (rifleAttack == true && timer > idleTime && playerMovement == Vector2.zero)
         {
             playerAnim.SetTrigger(_TUCKRIFLE);
+            rifle.SetActive(false);
+            shoulderRifle.SetActive(true);
 
             playerisIdle = true;
 
