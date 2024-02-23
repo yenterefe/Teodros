@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SwordAttack : MonoBehaviour
@@ -68,7 +66,7 @@ public class SwordAttack : MonoBehaviour
             Debug.Log("Enemy is dead");
         }
     }
-
+    // Have to refactor code to go to Enemy script 
     private void AttackPerformed(object receiver, EventArgs e)
     {
         attack = true;
@@ -101,7 +99,6 @@ public class SwordAttack : MonoBehaviour
         attack=false;   
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name== gameObjectName && attack == true)
@@ -109,5 +106,4 @@ public class SwordAttack : MonoBehaviour
             enemyLife-=swordDamage;
         }
     }
-
 }

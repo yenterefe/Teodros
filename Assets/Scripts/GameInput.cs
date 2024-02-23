@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;  
-using UnityEngine.InputSystem.Interactions;
+
 
 public class GameInput : MonoBehaviour
 {
@@ -13,7 +11,6 @@ public class GameInput : MonoBehaviour
     private Vector2 moveInput;
     private Vector2 cameraInput;
     private int weaponSwitchButtonPressed = 0;
-    private int attackButtonPressed = 0;
     public EventHandler OnReady;
     public EventHandler OnLightAttackPerformed; 
     public EventHandler OnLightAttackCanceled;

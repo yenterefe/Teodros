@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -163,7 +161,7 @@ public class Player : MonoBehaviour
             // Player takes camera totation
             transform.rotation = cam.transform.rotation;
 
-            float maxDistance = 999f;
+            float maxDistance = 50f;
 
             RaycastHit hit;
 
