@@ -507,6 +507,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 692641457}
+    - targetCorrespondingSourceObject: {fileID: 1852576806548013000, guid: 8d8e7bbd78175464f9417e3a56157de9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 456791782}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -3090848061168836670, guid: 8d8e7bbd78175464f9417e3a56157de9,
         type: 3}
@@ -1088,6 +1092,60 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &456791781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 456791782}
+  - component: {fileID: 456791783}
+  m_Layer: 0
+  m_Name: Enemy Sword
+  m_TagString: Blade
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &456791782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456791781}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.051079378, y: 0.88608766, z: 0.46034053, w: 0.018061757}
+  m_LocalPosition: {x: -0.07071328, y: 0.1131705, z: 0.03765389}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1080683214}
+  m_Father: {fileID: 525077302}
+  m_LocalEulerAnglesHint: {x: -144.864, y: 95.546, z: 361.052}
+--- !u!65 &456791783
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456791781}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6191986, y: 0.15332246, z: 0.046353776}
+  m_Center: {x: 0.2943905, y: 0.023318557, z: -0.0035427616}
 --- !u!1 &493390873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,6 +1328,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514139349}
   m_CullTransparentMesh: 1
+--- !u!4 &525077302 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 8d8e7bbd78175464f9417e3a56157de9,
+    type: 3}
+  m_PrefabInstance: {fileID: 148221217}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &555380826
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,6 +2501,85 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &1080683213
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 456791782}
+    m_Modifications:
+    - target: {fileID: 100000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_Name
+      value: short_sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b0fc72bbf586d4749aae53ba87fdd093, type: 3}
+--- !u!4 &1080683214 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: b0fc72bbf586d4749aae53ba87fdd093,
+    type: 3}
+  m_PrefabInstance: {fileID: 1080683213}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1085309290
 GameObject:
   m_ObjectHideFlags: 0
@@ -3874,7 +4017,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
@@ -3893,6 +4036,7 @@ MonoBehaviour:
   inputManager: {fileID: 110275407}
   enemyPrefab: {fileID: 1320318342}
   shield: {fileID: 692641456}
+  player: {fileID: 94655847}
 --- !u!1 &1725490009
 GameObject:
   m_ObjectHideFlags: 0

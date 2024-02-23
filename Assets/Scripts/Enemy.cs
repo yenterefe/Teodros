@@ -8,56 +8,93 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject inputManager;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject shield;
-
+    [SerializeField] private GameObject player;
 
     private GameInput input;
     private Animator enemyAnimation;
-    private int blockAnimation;
-    private int idleAnimation;
-    private float normalizedTransitionDuration = 0.15f;
+    
+    private bool playerAttacking= false;
+    private bool enemyBlocking = false;
 
-    private const string _SHIELDBLOCK = "Shield block";
-    private const string _IDLE = "Unarmed Idle";
+    private float distance;
+    private float enemyAttackDistance = 2f;
+    private float blockDistance = 3f;
+
+    private const string _SHIELDBLOCK = "Block";
+    private const string _ENEMYATTACK = "Attack";
 
     private void Awake()
     {
         input= inputManager.GetComponent<GameInput>();
         enemyAnimation=enemyPrefab.GetComponent<Animator>();
-        blockAnimation = Animator.StringToHash(_SHIELDBLOCK);
-        idleAnimation = Animator.StringToHash(_IDLE);
     }
 
     private void Start()
     {
-        input.OnLightAttackPerformed += BlockAttacks;
-        input.OnLightAttackCanceled += LowersShield;
-
-
+        input.OnLightAttackPerformed += PlayerAttack;
+        input.OnLightAttackPerformed += BlockAttack;
+        input.OnLightAttackCanceled += ReturnToIdle;
     }
 
-
-
-    private void BlockAttacks(object receiver, EventArgs e)
+    private void Update()
     {
-        // Enemy takes no damage if they block once, wriet script here later 
-
-
-        // Play block Animation 
-        enemyAnimation.CrossFade(blockAnimation, normalizedTransitionDuration);
+        distance = Vector3.Distance(player.transform.position, transform.position);
+        Debug.Log(distance);
+        AttackPlayer();
     }
 
-    private void LowersShield(object receiver, EventArgs e)
+    // This is to see if player is attacking so enemy can shield
+    private void PlayerAttack(object receiver, EventArgs e)
     {
-        // the cancel is to quick so I'm delaying it by the delay float
-        float delayAnimation = 1.5f;
-
-        Invoke("IdleAnimation", delayAnimation);
-        
+        playerAttacking = true;
+        Invoke("CancelPlayerAttack",.75f);
     }
 
-    private void IdleAnimation()
+    private void CancelPlayerAttack()
     {
-        enemyAnimation.CrossFade(idleAnimation, normalizedTransitionDuration);
+        playerAttacking = false;
     }
 
+    private void BlockAttack(object receiver, EventArgs e)
+    {
+        if(playerAttacking)
+        {
+            if (distance < blockDistance)
+            {
+                Debug.Log("Block");
+                enemyAnimation.SetBool(_SHIELDBLOCK, true);
+                enemyBlocking = true;
+            }
+        }
+    }
+
+    private void ReturnToIdle(object receiver, EventArgs e)
+    {
+        Invoke("TurnOffBlock", 2.5f);
+        enemyBlocking = false;
+    }
+
+    private void TurnOffBlock()
+    {
+        enemyAnimation.SetBool(_SHIELDBLOCK, false);
+    }
+       
+    private void AttackPlayer()
+    {
+        if(enemyBlocking==false)
+        {
+            if (distance < enemyAttackDistance)
+            {
+                // player will take damage if they are not blocking
+
+                //Play attack animation 
+                enemyAnimation.SetBool(_ENEMYATTACK, true);
+            }
+
+            else
+            {
+                enemyAnimation.SetBool(_ENEMYATTACK, false);
+            }
+        }
+    }
 }
