@@ -70,7 +70,8 @@ public class Enemy : MonoBehaviour
 
     private void ReturnToIdle(object receiver, EventArgs e)
     {
-        Invoke("TurnOffBlock", 2.5f);
+        float blockAnimationTimer = .75f;
+        Invoke("TurnOffBlock", blockAnimationTimer);
         enemyBlocking = false;
     }
 

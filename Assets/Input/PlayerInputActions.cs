@@ -98,6 +98,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shield"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f87ec72-0444-4899-8c10-19c4d51e0461"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -298,6 +307,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Fire Rifle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af356b52-17fc-434b-bef5-c9160a9196b8"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Shield"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -364,6 +384,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_SwitchtoRifle = m_Player.FindAction("Switch to Rifle", throwIfNotFound: true);
         m_Player_RifleAim = m_Player.FindAction("Rifle Aim", throwIfNotFound: true);
         m_Player_FireRifle = m_Player.FindAction("Fire Rifle", throwIfNotFound: true);
+        m_Player_Shield = m_Player.FindAction("Shield", throwIfNotFound: true);
         // Camera
         m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
         m_Camera_Rotation = m_Camera.FindAction("Rotation", throwIfNotFound: true);
@@ -436,6 +457,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_SwitchtoRifle;
     private readonly InputAction m_Player_RifleAim;
     private readonly InputAction m_Player_FireRifle;
+    private readonly InputAction m_Player_Shield;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -448,6 +470,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @SwitchtoRifle => m_Wrapper.m_Player_SwitchtoRifle;
         public InputAction @RifleAim => m_Wrapper.m_Player_RifleAim;
         public InputAction @FireRifle => m_Wrapper.m_Player_FireRifle;
+        public InputAction @Shield => m_Wrapper.m_Player_Shield;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -481,6 +504,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @FireRifle.started += instance.OnFireRifle;
             @FireRifle.performed += instance.OnFireRifle;
             @FireRifle.canceled += instance.OnFireRifle;
+            @Shield.started += instance.OnShield;
+            @Shield.performed += instance.OnShield;
+            @Shield.canceled += instance.OnShield;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -509,6 +535,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @FireRifle.started -= instance.OnFireRifle;
             @FireRifle.performed -= instance.OnFireRifle;
             @FireRifle.canceled -= instance.OnFireRifle;
+            @Shield.started -= instance.OnShield;
+            @Shield.performed -= instance.OnShield;
+            @Shield.canceled -= instance.OnShield;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -600,6 +629,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnSwitchtoRifle(InputAction.CallbackContext context);
         void OnRifleAim(InputAction.CallbackContext context);
         void OnFireRifle(InputAction.CallbackContext context);
+        void OnShield(InputAction.CallbackContext context);
     }
     public interface ICameraActions
     {

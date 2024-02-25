@@ -20,6 +20,8 @@ public class GameInput : MonoBehaviour
     public EventHandler OnRifleAimCanceled; 
     public EventHandler OnRifleFirePerformed; 
     public EventHandler OnRifleFireCanceled;
+    public EventHandler OnShieldPerformed;
+    public EventHandler OnShieldCanceled;
 
     private void Awake()
     {
@@ -31,6 +33,10 @@ public class GameInput : MonoBehaviour
 
         inputActions.Camera.Rotation.Enable();
 
+        inputActions.Camera.Rotation.performed += Rotation_performed;
+
+        inputActions.Camera.Rotation.canceled += Rotation_canceled;
+
         inputActions.Player.Movement.performed += Movement_performed;
 
         inputActions.Player.Movement.canceled += Movement_canceled;
@@ -38,10 +44,6 @@ public class GameInput : MonoBehaviour
         inputActions.Player.LightAttack.performed += LightAttack_performed;
 
         inputActions.Player.LightAttack.canceled += LightAttack_canceled;
-
-        inputActions.Camera.Rotation.performed += Rotation_performed;
-
-        inputActions.Camera.Rotation.canceled += Rotation_canceled;
 
         inputActions.Player.SwitchToSword.performed += SwitchToSword_performed;
 
@@ -54,6 +56,27 @@ public class GameInput : MonoBehaviour
         inputActions.Player.FireRifle.performed += FireRifle_performed;
 
         inputActions.Player.FireRifle.canceled += FireRifle_canceled;
+
+        inputActions.Player.Shield.performed += Shield_performed;
+
+        inputActions.Player.Shield.canceled += Shield_canceled;
+
+    }
+
+    private void Shield_canceled(InputAction.CallbackContext obj)
+    {
+       if(OnShieldCanceled != null)
+        {
+            OnShieldCanceled(this, EventArgs.Empty);
+        }
+    }
+
+    private void Shield_performed(InputAction.CallbackContext obj)
+    {
+        if(OnShieldPerformed != null)
+        {
+            OnShieldPerformed(this, EventArgs.Empty);
+        }
     }
 
     private void LightAttack_canceled(InputAction.CallbackContext obj)

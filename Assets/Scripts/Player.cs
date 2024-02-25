@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject enemyCrossHair;
     [SerializeField] private GameObject rifle;
     [SerializeField] private GameObject target;
-    //[SerializeField] private Transform debugTransform;
+    
     private string gameObjectName;
 
     private void Awake()
@@ -138,8 +138,6 @@ public class Player : MonoBehaviour
             // To smoothen corner directions for movement
             currentAnimationBlendVector = Vector2.SmoothDamp(currentAnimationBlendVector, inputDirection, ref animationVelocity, animationSmoothTime);
 
-            //Vector3 vector3Direction= new Vector3(inputDirection.x, 0, inputDirection.y);
-
             Vector3 vector3Direction = new Vector3(currentAnimationBlendVector.x, 0, currentAnimationBlendVector.y);
 
             vector3Direction = vector3Direction.normalized;
@@ -193,9 +191,18 @@ public class Player : MonoBehaviour
                 }
             }
         }
-       
+
+        if (buttonPressed== 2)
+        {
+            float secondComboTimer = .65f;
+            activateSecondCombo=true;
+            buttonPressed=0;
+            Invoke("DeactivateSecondCombo",secondComboTimer);
+        }
+
+        // Kee this line of code for now
         // To Stop player movement while attacking. This code might be deleted in the final game
-        if (lightAttack == true)
+        /*if (lightAttack == true)
         {
             timer += Time.deltaTime;
 
@@ -223,7 +230,7 @@ public class Player : MonoBehaviour
                     lightAttack = false;
                 }
             }
-        }
+        }/
 
         else /*(lightAttack == false)*/
         {
@@ -236,6 +243,11 @@ public class Player : MonoBehaviour
                 cam.transform.localEulerAngles = Vector3.zero;
             }
         }
+    }
+
+    private void DeactivateSecondCombo()
+    {
+        activateSecondCombo = false;
     }
 
     public bool EnemyDamage()
