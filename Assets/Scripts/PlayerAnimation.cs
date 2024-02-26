@@ -38,6 +38,7 @@ public class PlayerAnimation : MonoBehaviour
     private int moveZID;
     private int lightAttackAnimation1;
     private int lightAttackAnimation2;
+    private int block;
     private int rifleAim;
     private int fireRifle;
     private int swordMovementAnimation;
@@ -53,6 +54,7 @@ public class PlayerAnimation : MonoBehaviour
     private const string _ATTACKRIFLEMOVEMENT = "setRifleAttackMovement";
     private const string _AIMRIFLE = "setAiming";
     private const string _SHOOT= "shoot";
+    private const string _BLOCK = "block";
 
     private void Awake()
     {
@@ -73,6 +75,8 @@ public class PlayerAnimation : MonoBehaviour
         rifleAim = Animator.StringToHash("Aiming Rifle");
         fireRifle = Animator.StringToHash("Firing Rifle (1)");
 
+        block = Animator.StringToHash("Block");
+
     }
 
     private void Start()
@@ -90,6 +94,22 @@ public class PlayerAnimation : MonoBehaviour
         input.OnRifleFireCanceled += StopShooting;
 
         input.OnRifleAimCanceled += CancelAim;
+
+        input.OnShieldPerformed += BlockAttack;
+
+        input.OnShieldCanceled += CancelBlock; 
+    }
+
+    private void BlockAttack(object receiver, EventArgs e)
+    {
+        playerAnim.CrossFade(block, animationTransition);
+       
+    }
+
+    private void CancelBlock(object receiver, EventArgs e)
+    {
+        playerAnim.CrossFade(swordMovementAnimation, animationTransition);
+        sword.SetActive(true);
     }
 
     private void RifleModeActivated(object receiver, EventArgs e)

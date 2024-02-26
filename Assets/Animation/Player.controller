@@ -373,7 +373,7 @@ AnimatorStateMachine:
     m_Position: {x: 620, y: -130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2496647165410326774}
-    m_Position: {x: -110, y: -130, z: 0}
+    m_Position: {x: -170, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 458153350659734707}
     m_Position: {x: 130, y: -520, z: 0}
@@ -397,7 +397,7 @@ AnimatorStateMachine:
     m_Position: {x: 710, y: -1410, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 317978313021625324}
-    m_Position: {x: 1218.0917, y: -443.47382, z: 0}
+    m_Position: {x: 610, y: 40, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -617,6 +617,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: block
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -666,7 +672,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sword And Shield Block Idle
+  m_Name: Block
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
