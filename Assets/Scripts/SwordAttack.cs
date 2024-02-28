@@ -11,6 +11,7 @@ public class SwordAttack : MonoBehaviour
     [SerializeField] float cancelAttackSpeed;
     [SerializeField] float swordDamage = 0.5f;
     [SerializeField] float gunDamage = 0.75f;
+    private float swordTimer = 0f; 
 
     private GameInput input;
    
@@ -46,13 +47,13 @@ public class SwordAttack : MonoBehaviour
     {
         transform.LookAt(player.transform);
 
-        Debug.Log("attack is " + attack);
+        //Debug.Log("attack is " + attack);
 
-        Debug.Log("enemy life is " + enemyLife);
+        //Debug.Log("enemy life is " + enemyLife);
 
-        Debug.Log("Is second combo active " + secondCombo);
+        //Debug.Log("Is second combo active " + secondCombo);
 
-        Debug.Log( "Cancel speed is " + cancelAttackSpeed);
+        //Debug.Log( "Cancel speed is " + cancelAttackSpeed);
 
         bool takeDamage = playerScript.EnemyDamage();
 
@@ -63,7 +64,7 @@ public class SwordAttack : MonoBehaviour
 
         if(enemyLife < 0)
         {
-            Debug.Log("Enemy is dead");
+            //Debug.Log("Enemy is dead");
         }
     }
     // Have to refactor code to go to Enemy script 
@@ -75,13 +76,11 @@ public class SwordAttack : MonoBehaviour
 
         if (secondCombo == true)
         {
-            
             cancelAttackSpeed = 2.4f;
         }
 
         //if (secondCombo != true)
         {
-
             //cancelAttackSpeed = 1.5f;
         }
 
@@ -104,6 +103,13 @@ public class SwordAttack : MonoBehaviour
         if (other.gameObject.name== gameObjectName && attack == true)
         {
             enemyLife-=swordDamage;
+            swordTimer += Time.deltaTime;   
         }
     }
+
+    public float SwordTimer()
+    {
+        return swordTimer;
+    }
+
 }

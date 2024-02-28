@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     private float buttonPressed = 0;
     private bool shotFired= false;
     private bool enemyTakeDamage= false;
-    private bool secondCombo; 
+    private bool secondCombo;
 
     [SerializeField] private LayerMask aimColliderMask = new LayerMask();
 
@@ -64,8 +64,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("Is shot fired " + shotFired);
-        Debug.Log("Name of object aimed at " + gameObjectName);
+        //Debug.Log("Is shot fired " + shotFired);
+        //Debug.Log("Name of object aimed at " + gameObjectName);
 
 
     }
@@ -200,7 +200,7 @@ public class Player : MonoBehaviour
             Invoke("DeactivateSecondCombo",secondComboTimer);
         }
 
-        // Kee this line of code for now
+        // Keep this line of code for now
         // To Stop player movement while attacking. This code might be deleted in the final game
         /*if (lightAttack == true)
         {
@@ -259,7 +259,6 @@ public class Player : MonoBehaviour
     {
         return secondCombo;
     }
-
 }
 
 

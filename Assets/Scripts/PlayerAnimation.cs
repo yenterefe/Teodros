@@ -6,6 +6,8 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField] private GameObject playerOBJ;
     [SerializeField] private GameObject InputManager;
 
+    [SerializeField] private GameObject enemySword;
+
     [SerializeField] private float animationTransition = .15f;
 
     [SerializeField] GameObject aimCamera;
@@ -22,9 +24,12 @@ public class PlayerAnimation : MonoBehaviour
 
     [SerializeField] private float delayActiveCamera = 1f;
 
+    [SerializeField] private ParticleSystem gunSmoke;
+
     private GameInput input;
     private Player player;
     private Animator playerAnim;
+    private EnemySword enemySwordAttack;
 
     private bool rifleAttack = false;
     private bool startTimer = false;
@@ -32,6 +37,7 @@ public class PlayerAnimation : MonoBehaviour
     private bool playerisIdle = false;
     private bool aimRifle = false;
     private bool rifleShot = false;
+    private bool shieldActive =false;
 
 
     private int moveXID;
@@ -44,6 +50,7 @@ public class PlayerAnimation : MonoBehaviour
     private int swordMovementAnimation;
     private int sheatingSword;
     private float timer = 0;
+    private float blockSpeed = 0;
 
     private const string _ATTACKSWORDMOVEMENT = "setSwordAttackMovement";
     private const string _UNARMEDMOVEMENT = "unArmedMovement";
@@ -61,6 +68,7 @@ public class PlayerAnimation : MonoBehaviour
         player = playerOBJ.GetComponent<Player>();
         input = InputManager.GetComponent<GameInput>();
         playerAnim = GetComponent<Animator>();
+        enemySwordAttack= enemySword.GetComponent<EnemySword>();
 
         moveXID = Animator.StringToHash("MoveX");
         moveZID = Animator.StringToHash("MoveZ");
@@ -102,12 +110,16 @@ public class PlayerAnimation : MonoBehaviour
 
     private void BlockAttack(object receiver, EventArgs e)
     {
+        shieldActive = true;
         playerAnim.CrossFade(block, animationTransition);
-       
+        blockSpeed+=Time.deltaTime;
+        //Debug.Log($"Block speed is {blockSpeed}");
     }
 
     private void CancelBlock(object receiver, EventArgs e)
     {
+        blockSpeed = 0;
+        shieldActive=false;
         playerAnim.CrossFade(swordMovementAnimation, animationTransition);
         sword.SetActive(true);
     }
@@ -197,6 +209,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (aimRifle == true)
         {
+            gunSmoke.Play();
             rifleShot = true;
             playerAnim.SetBool(_SHOOT, true);
             shakeCamera.SetActive(true);
@@ -217,6 +230,9 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Update()
     {
+        // Detects for parry
+        Parry();
+
         float idleTime = 20f;
 
         if (startTimer==true)
@@ -276,4 +292,19 @@ public class PlayerAnimation : MonoBehaviour
     {
         return rifleShot;
     }
+
+    public bool ShieldActive()
+    {
+        return shieldActive;
+    }
+
+    private void Parry()
+    {
+        float enemyAttackSpeed =enemySwordAttack.EnemySwordTimer();
+        //if(blockSpeed - enemyAttackSpeed== 0.2f)
+        {
+            //Debug.Log(enemyAttackSpeed - blockSpeed);
+        }
+    }
+
 }

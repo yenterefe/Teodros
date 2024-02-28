@@ -290,7 +290,7 @@
                     "name": "",
                     "id": "af356b52-17fc-434b-bef5-c9160a9196b8",
                     "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.03,pressPoint=0.08)",
                     "processors": "",
                     "groups": "Controller",
                     "action": "Shield",

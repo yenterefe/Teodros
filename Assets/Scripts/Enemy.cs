@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         input= inputManager.GetComponent<GameInput>();
-        enemyAnimation=enemyPrefab.GetComponent<Animator>();
+        enemyAnimation = enemyPrefab.GetComponent<Animator>(); 
     }
 
     private void Start()
@@ -38,11 +38,27 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        distance = Vector3.Distance(player.transform.position, transform.position);
-        Debug.Log(distance);
         AttackPlayer();
-    }
 
+        distance = Vector3.Distance(transform.position, player.transform.position);
+
+        bool stopMovement = false;
+
+        if (distance < 2)
+        {
+            stopMovement = true;
+            enemyAnimation.SetBool("Moving", false);
+        }
+
+        if (stopMovement == false)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 1 * Time.deltaTime);
+
+            enemyAnimation.SetBool("Moving", true);
+        }
+       
+    }
+    
     // This is to see if player is attacking so enemy can shield
     private void PlayerAttack(object receiver, EventArgs e)
     {
