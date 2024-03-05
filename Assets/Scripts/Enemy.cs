@@ -9,9 +9,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject shield;
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject playerPrefab;
 
     private GameInput input;
     private Animator enemyAnimation;
+    private PlayerAnimation playerAnimation;
     
     private bool playerAttacking= false;
     private bool enemyBlocking = false;
@@ -26,7 +28,8 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         input= inputManager.GetComponent<GameInput>();
-        enemyAnimation = enemyPrefab.GetComponent<Animator>(); 
+        enemyAnimation = enemyPrefab.GetComponent<Animator>();
+        playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
     }
 
     private void Start()
@@ -40,23 +43,35 @@ public class Enemy : MonoBehaviour
     {
         AttackPlayer();
 
-        distance = Vector3.Distance(transform.position, player.transform.position);
+        bool playerAimingGun = playerAnimation.IsPlayerAiming();
 
-        bool stopMovement = false;
-
-        if (distance < 2)
+        if (playerAimingGun == false)
         {
-            stopMovement = true;
-            enemyAnimation.SetBool("Moving", false);
+            distance = Vector3.Distance(transform.position, player.transform.position);
+
+            bool stopMovement = false;
+
+            if (distance < 2)
+            {
+                stopMovement = true;
+                enemyAnimation.SetBool("Moving", false);
+            }
+
+            if (stopMovement == false)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 1 * Time.deltaTime);
+
+                enemyAnimation.SetBool("Moving", true);
+            }
         }
 
-        if (stopMovement == false)
+        // If player has gun and enemy is not armed with a gun, it will run for cover 
+        else
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 1 * Time.deltaTime);
-
-            enemyAnimation.SetBool("Moving", true);
+            Vector3 runAway = transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -1 * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z), Time.deltaTime);
         }
-       
     }
     
     // This is to see if player is attacking so enemy can shield
@@ -98,7 +113,7 @@ public class Enemy : MonoBehaviour
        
     private void AttackPlayer()
     {
-        if(enemyBlocking==false)
+        if (enemyBlocking==false)
         {
             if (distance < enemyAttackDistance)
             {
