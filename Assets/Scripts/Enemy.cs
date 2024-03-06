@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     
     private bool playerAttacking= false;
     private bool enemyBlocking = false;
+    private bool playerSeen = false;
 
     private float distance;
     private float enemyAttackDistance = 2f;
@@ -41,37 +42,65 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        AttackPlayer();
+        Ray ray = new Ray(transform.position, transform.forward);
 
-        bool playerAimingGun = playerAnimation.IsPlayerAiming();
+        Debug.Log(playerSeen);
 
-        if (playerAimingGun == false)
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            distance = Vector3.Distance(transform.position, player.transform.position);
-
-            bool stopMovement = false;
-
-            if (distance < 2)
+            if(hit.collider.name == "Player")
             {
-                stopMovement = true;
+                playerSeen = true;
+            }
+
+            else
+            {
+                playerSeen = false;
                 enemyAnimation.SetBool("Moving", false);
             }
+        }
+       
+        if(playerSeen== true)
+        {
+            AttackPlayer();
 
-            if (stopMovement == false)
+            bool playerAimingGun = playerAnimation.IsPlayerAiming();
+
+            if (playerAimingGun == false)
             {
-                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 1 * Time.deltaTime);
+                distance = Vector3.Distance(transform.position, player.transform.position);
 
-                enemyAnimation.SetBool("Moving", true);
+                bool stopMovement = false;
+
+                if (distance < 2)
+                {
+                    stopMovement = true;
+                    enemyAnimation.SetBool("Moving", false);
+                }
+
+                if (stopMovement == false)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 1 * Time.deltaTime);
+
+                    enemyAnimation.SetBool("Moving", true);
+                }
+            }
+
+            // If player has gun and enemy is not armed with a gun, it will run for cover 
+            else
+            {
+                Vector3 runAway = transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -1 * Time.deltaTime);
+
+                transform.Rotate(new Vector3(transform.position.x, 180, transform.position.z));
             }
         }
 
-        // If player has gun and enemy is not armed with a gun, it will run for cover 
         else
         {
-            Vector3 runAway = transform.position = Vector3.MoveTowards(transform.position, player.transform.position, -1 * Time.deltaTime);
-            transform.rotation = Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(transform.rotation.x, 0, transform.rotation.z), Time.deltaTime);
+                //enemy stays idle
         }
+      
+        
     }
     
     // This is to see if player is attacking so enemy can shield

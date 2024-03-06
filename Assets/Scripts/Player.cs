@@ -156,7 +156,7 @@ public class Player : MonoBehaviour
 
         if (isAiming == true)
         {
-            // Player takes camera totation
+            // Player takes camera rotation
             transform.rotation = cam.transform.rotation;
 
             float maxDistance = 50f;
