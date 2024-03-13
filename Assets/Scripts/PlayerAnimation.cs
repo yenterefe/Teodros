@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] private GameObject playerOBJ;
+
     [SerializeField] private GameObject InputManager;
 
     [SerializeField] private GameObject enemySword;

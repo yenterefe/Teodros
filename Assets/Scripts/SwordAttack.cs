@@ -38,9 +38,7 @@ public class SwordAttack : MonoBehaviour
 
     private void Start()
     {
-        
         input.OnLightAttackPerformed += AttackPerformed;
-        //input.OnLightAttackCanceled += AttackCanceled;
     }
 
     private void Update()
@@ -79,19 +77,9 @@ public class SwordAttack : MonoBehaviour
             cancelAttackSpeed = 2.4f;
         }
 
-        //if (secondCombo != true)
-        {
-            //cancelAttackSpeed = 1.5f;
-        }
 
         Invoke("CancelAttack", cancelAttackSpeed);
     }
-
-    /*private void AttackCanceled(object receiver, EventArgs e)
-    {
-        // event cancel so fast that it remains false so I used invoke to slow it down 
-        Invoke("CancelAttack", cancelSpeed);
-    }*/
 
     private void CancelAttack()
     {

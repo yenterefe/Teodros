@@ -22,13 +22,18 @@ public class Player : MonoBehaviour
 
     //Attack
     [SerializeField] private float delayShotFired = 0.5f;
-    private bool lightAttack;
-    private bool activateSecondCombo = false;
+    
     private float timer = 0;
     private float buttonPressed = 0;
+
     private bool shotFired= false;
     private bool enemyTakeDamage= false;
     private bool secondCombo;
+    private bool lightAttack;
+    private bool activateSecondCombo = false;
+    private bool isAiming;
+
+    private Ray ray;
 
     [SerializeField] private LayerMask aimColliderMask = new LayerMask();
 
@@ -66,8 +71,6 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("Is shot fired " + shotFired);
         //Debug.Log("Name of object aimed at " + gameObjectName);
-
-
     }
 
     private void FixedUpdate()
@@ -75,21 +78,6 @@ public class Player : MonoBehaviour
         HandleMovement();
     }
 
-    /*private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.name == "Rifle")
-        {
-            rifleBool = true;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.name == "Rifle")
-        {
-            rifleBool = false;
-        }
-    }*/
 
     public Vector3 Movement()
     {
@@ -130,7 +118,7 @@ public class Player : MonoBehaviour
 
     private void HandleMovement()
     {
-        bool isAiming = playerAnimation.IsPlayerAiming();
+        isAiming = playerAnimation.IsPlayerAiming();
 
         {
             Vector2 inputDirection = gameInput.Player2DirectionNormalized();
@@ -164,12 +152,14 @@ public class Player : MonoBehaviour
             RaycastHit hit;
 
             Vector2 centerScreen = new Vector2(Screen.width/2, Screen.height/2);
-            Ray ray = cam.ScreenPointToRay(centerScreen);
+            ray = cam.ScreenPointToRay(centerScreen);
             
             if(Physics.Raycast(ray, out hit, maxDistance, aimColliderMask))
             {
+                Debug.DrawRay(transform.position, centerScreen, Color.red);
                 if (hit.collider.gameObject.name == "Enemy")
                 {
+                    Debug.Log("Enemy onsite!");
                     noEnemyCrossHair.SetActive(false);
                     enemyCrossHair.SetActive(true);
                 }
@@ -200,38 +190,6 @@ public class Player : MonoBehaviour
             Invoke("DeactivateSecondCombo",secondComboTimer);
         }
 
-        // Keep this line of code for now
-        // To Stop player movement while attacking. This code might be deleted in the final game
-        /*if (lightAttack == true)
-        {
-            timer += Time.deltaTime;
-
-            secondCombo = buttonPressed > 1;
-
-            if (secondCombo == true)
-            {
-                activateSecondCombo = true;
-
-                if (timer > secondAttackAnimationTimer)
-                {
-                    activateSecondCombo = false;
-                    buttonPressed = 0;
-                    timer = 0;
-                }
-            }
-
-            else if (activateSecondCombo == false)
-            {
-                if (timer > animationTimer)
-                {
-                    timer = 0;
-                    buttonPressed = 0;
-                    activateSecondCombo = false;
-                    lightAttack = false;
-                }
-            }
-        }/
-
         else /*(lightAttack == false)*/
         {
             direction = playerRigidbody.velocity = moveDir * directionSpeed;
@@ -258,6 +216,11 @@ public class Player : MonoBehaviour
     public bool SecondComboDamage()
     {
         return secondCombo;
+    }
+
+    public bool IsAiming()
+    {
+        return isAiming;
     }
 }
 

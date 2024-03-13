@@ -6,11 +6,16 @@ using UnityEngine.InputSystem;
 public class GameInput : MonoBehaviour
 {
     [SerializeField] GameObject player;
+
     private PlayerAnimation playerAnimation;
+
     private PlayerInputActions inputActions;
+
     private Vector2 moveInput;
     private Vector2 cameraInput;
+
     private int weaponSwitchButtonPressed = 0;
+
     public EventHandler OnReady;
     public EventHandler OnLightAttackPerformed; 
     public EventHandler OnLightAttackCanceled;
@@ -141,6 +146,8 @@ public class GameInput : MonoBehaviour
         if (OnLightAttackPerformed != null)
         {
             OnLightAttackPerformed(this, EventArgs.Empty);
+
+
         }
     }
 
