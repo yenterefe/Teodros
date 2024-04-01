@@ -35,13 +35,17 @@ public class PatrolState : StateMachineBehaviour
             checkpointNumber = 0;
         }
 
-        enemy = GameObject.Find("Enemy");
+        //enemy = GameObject.Find("Enemy");
+
+        enemy = GameObject.Find("Enemy A");
 
         player = GameObject.Find("Player");
 
-        enemyPos = GameObject.Find("Enemy").transform ;
+        //enemyPos = GameObject.Find("Enemy").transform ;
 
-       playerPos = GameObject.Find("Player").transform;
+        enemyPos = GameObject.Find("Enemy A").transform;
+
+        playerPos = GameObject.Find("Player").transform;
 
         enemyScript = enemy.GetComponent<Enemy>();
 
@@ -71,6 +75,8 @@ public class PatrolState : StateMachineBehaviour
             if (hit.collider.name=="Player")
             {
                 playerSeen = true;
+
+                Debug.Log("Player seen");
             }
 
             // will delete in the final game

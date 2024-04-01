@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAnimation : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class PlayerAnimation : MonoBehaviour
 
     [SerializeField] private ParticleSystem gunSmoke;
 
+    [SerializeField] GameObject staminaBar; 
+
     private GameInput input;
     private Player player;
     private Animator playerAnim;
@@ -39,6 +42,9 @@ public class PlayerAnimation : MonoBehaviour
     private bool aimRifle = false;
     private bool rifleShot = false;
     private bool shieldActive =false;
+    private bool lightAttack= false;
+    private bool lightComboAttack = false;
+    private bool staminaDepleted = false;
 
 
     private int moveXID;
@@ -109,6 +115,84 @@ public class PlayerAnimation : MonoBehaviour
         input.OnShieldCanceled += CancelBlock; 
     }
 
+    private void DeactivateSheatingSword()
+    {
+        sheatedSword.SetActive(false);
+    }
+
+    private void ActivateSword()
+    {
+        sword.SetActive(true);
+        startTimer = true;
+    }
+
+    private void LightAttack(object receiver, EventArgs e)
+    {
+        if (staminaDepleted == false)
+        {
+            lightAttack = true;
+            rifle.SetActive(false);
+            shoulderRifle.SetActive(true);
+
+            sheatedSword.SetActive(false);
+
+            sword.SetActive(true);
+
+            startTimer = true;
+
+            playerAnim.SetBool(_ATTACKSWORDMOVEMENT, true);
+
+            playerAnim.CrossFade(lightAttackAnimation1, animationTransition);
+
+            if (player.SecondCombo() == true)
+            {
+                lightComboAttack = true;
+                playerAnim.CrossFade(lightAttackAnimation2, animationTransition);
+                timer = 0;
+                resetTimer = true;
+            }
+        }
+    }
+
+    private void AimRifle(object receiver, EventArgs e)
+    {
+
+        aimCamera.SetActive(true);
+
+        if (rifleAttack == true)
+        {
+            aimRifle = true;
+            startTimer = true;
+            playerAnim.SetBool(_AIMRIFLE, true);
+        }
+    }
+
+    private void CancelAim(object receiver, EventArgs e)
+    {
+        aimCamera.SetActive(false);
+
+        aimRifle = false;
+        playerAnim.SetBool(_AIMRIFLE, false);
+    }
+
+    private void ShootRifle(object receiver, EventArgs e)
+    {
+        if (aimRifle == true)
+        {
+            gunSmoke.Play();
+            rifleShot = true;
+            playerAnim.SetBool(_SHOOT, true);
+            shakeCamera.SetActive(true);
+        }
+    }
+
+    private void StopShooting(object receiver, EventArgs e)
+    {
+        playerAnim.SetBool(_SHOOT, false);
+        Invoke("DelayAimCamera", delayActiveCamera);
+        rifleShot = false;
+    }
+
     private void BlockAttack(object receiver, EventArgs e)
     {
         shieldActive = true;
@@ -149,139 +233,22 @@ public class PlayerAnimation : MonoBehaviour
         Invoke("ActivateSword", activateSwordTimer);
     }
 
-    private void DeactivateSheatingSword()
+
+    private void Update()
     {
-        sheatedSword.SetActive(false);
-    }
+        // Checks for player's stamina
+        Stamina();
 
-    private void ActivateSword()
-    {
-        sword.SetActive(true);
-        startTimer = true;
-    }
+        // Detects for parry
+        Parry();
 
-    private void LightAttack(object receiver, EventArgs e)
-    {
-        {
-            rifle.SetActive(false);
-            shoulderRifle.SetActive(true);
-
-            sheatedSword.SetActive(false);
-
-            sword.SetActive(true);
-
-            startTimer = true;
-
-            playerAnim.SetBool(_ATTACKSWORDMOVEMENT, true);
-
-            playerAnim.CrossFade(lightAttackAnimation1, animationTransition);
-
-            if (player.SecondCombo() == true)
-            {
-                playerAnim.CrossFade(lightAttackAnimation2, animationTransition);
-                timer = 0;
-                resetTimer = true;
-            }
-        }
-    }
-   
-    private void  AimRifle (object receiver, EventArgs e)
-    {
-
-        aimCamera.SetActive(true);
-
-        if (rifleAttack==true)
-        {
-            aimRifle = true;
-            startTimer = true;
-            playerAnim.SetBool(_AIMRIFLE, true);
-        }
-    }
-
-    private void CancelAim( object receiver, EventArgs e)
-    {
-        aimCamera.SetActive(false);
-
-        aimRifle=false;
-        playerAnim.SetBool(_AIMRIFLE, false);   
-    }
-
-    private void ShootRifle(object receiver, EventArgs e)
-    {
-        if (aimRifle == true)
-        {
-            gunSmoke.Play();
-            rifleShot = true;
-            playerAnim.SetBool(_SHOOT, true);
-            shakeCamera.SetActive(true);
-        }     
-    }
-
-    private void StopShooting(object receiver, EventArgs e)
-    {       
-        playerAnim.SetBool(_SHOOT, false);
-        Invoke("DelayAimCamera", delayActiveCamera);
-        rifleShot=false;
+        // Sets timer for idle animation to kick in
+        IdleTimer();
     }
 
     private void DelayAimCamera()
     {
         shakeCamera.SetActive(false);
-    }
-
-    private void Update()
-    {
-        // Detects for parry
-        Parry();
-
-        float idleTime = 20f;
-
-        if (startTimer==true)
-        {
-            timer += Time.deltaTime;
-        }
-
-        // Dont delete!
-       //Debug.Log(timer);
-        
-        Vector2 playerMovement = input.Player2DirectionNormalized();
-
-        playerAnim.SetFloat(moveXID, player.SmoothDumpAnimation().x);
-        playerAnim.SetFloat(moveZID, player.SmoothDumpAnimation().y);
-
-        if (rifleAttack == true && timer > idleTime && playerMovement == Vector2.zero)
-        {
-            playerAnim.SetTrigger(_TUCKRIFLE);
-            rifle.SetActive(false);
-            shoulderRifle.SetActive(true);
-
-            playerisIdle = true;
-
-            if (playerisIdle == true)
-            {
-                rifleAttack = false;
-                startTimer = false;
-                timer = 0;
-                playerAnim.SetBool(_UNARMEDMOVEMENT, true);
-            }
-        }
-
-        if (timer> idleTime && playerMovement == Vector2.zero)
-        {
-            playerAnim.SetTrigger(_TUCKSWORD);
-
-            sword.SetActive(false);
-            sheatedSword.SetActive(true);
-
-            playerisIdle = true;
-
-            if(playerisIdle==true)
-            {
-                startTimer=false;
-                timer = 0;
-                playerAnim.SetBool(_UNARMEDMOVEMENT, true);
-            }
-        }
     }
 
     public bool IsPlayerAiming()
@@ -305,6 +272,81 @@ public class PlayerAnimation : MonoBehaviour
         //if(blockSpeed - enemyAttackSpeed== 0.2f)
         {
             //Debug.Log(enemyAttackSpeed - blockSpeed);
+        }
+    }
+
+    public bool LightAttack()
+    {
+        return lightAttack;
+    }
+
+    public bool LightComboAttack()
+    {
+        return lightComboAttack;
+    }
+
+    private void Stamina()
+    {
+        if (staminaBar.GetComponent<Slider>().value < 10f)
+        {
+            staminaDepleted = true;
+        }
+
+        else
+        {
+            staminaDepleted = false;
+        }
+    }
+
+    private void IdleTimer()
+    {
+        float idleTime = 20f;
+
+        if (startTimer == true)
+        {
+            timer += Time.deltaTime;
+        }
+
+        // Dont delete!
+        //Debug.Log(timer);
+
+        Vector2 playerMovement = input.Player2DirectionNormalized();
+
+        playerAnim.SetFloat(moveXID, player.SmoothDumpAnimation().x);
+        playerAnim.SetFloat(moveZID, player.SmoothDumpAnimation().y);
+
+        if (rifleAttack == true && timer > idleTime && playerMovement == Vector2.zero)
+        {
+            playerAnim.SetTrigger(_TUCKRIFLE);
+            rifle.SetActive(false);
+            shoulderRifle.SetActive(true);
+
+            playerisIdle = true;
+
+            if (playerisIdle == true)
+            {
+                rifleAttack = false;
+                startTimer = false;
+                timer = 0;
+                playerAnim.SetBool(_UNARMEDMOVEMENT, true);
+            }
+        }
+
+        if (timer > idleTime && playerMovement == Vector2.zero)
+        {
+            playerAnim.SetTrigger(_TUCKSWORD);
+
+            sword.SetActive(false);
+            sheatedSword.SetActive(true);
+
+            playerisIdle = true;
+
+            if (playerisIdle == true)
+            {
+                startTimer = false;
+                timer = 0;
+                playerAnim.SetBool(_UNARMEDMOVEMENT, true);
+            }
         }
     }
 

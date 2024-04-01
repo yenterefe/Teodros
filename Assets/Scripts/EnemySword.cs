@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySword : MonoBehaviour
 {
     [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject playerHealthBar;
 
     private float enemySwordTimer = 0;
 
@@ -21,7 +23,7 @@ public class EnemySword : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
-            //Debug.Log("Player take damage");
+            playerHealthBar.GetComponent<Slider>().value -=20;        
         }
 
         else if(other.gameObject.CompareTag("Shield") && shieldActive ==true)
