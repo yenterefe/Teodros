@@ -239,9 +239,6 @@ public class PlayerAnimation : MonoBehaviour
         // Checks for player's stamina
         Stamina();
 
-        // Detects for parry
-        Parry();
-
         // Sets timer for idle animation to kick in
         IdleTimer();
     }
@@ -264,15 +261,6 @@ public class PlayerAnimation : MonoBehaviour
     public bool ShieldActive()
     {
         return shieldActive;
-    }
-
-    private void Parry()
-    {
-        float enemyAttackSpeed =enemySwordAttack.EnemySwordTimer();
-        //if(blockSpeed - enemyAttackSpeed== 0.2f)
-        {
-            //Debug.Log(enemyAttackSpeed - blockSpeed);
-        }
     }
 
     public bool LightAttack()

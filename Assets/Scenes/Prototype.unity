@@ -1530,7 +1530,7 @@ Transform:
   m_GameObject: {fileID: 94655847}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.033, z: 0}
+  m_LocalPosition: {x: 0, y: 0.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1560,7 +1560,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -1579,7 +1579,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2485,7 +2485,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.47575808, y: 1.3307228, z: -2.22}
+  m_LocalPosition: {x: 0.47575808, y: 1.4777228, z: -2.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2852,6 +2852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 608046644}
   playerHealthBar: {fileID: 0}
+  inputManager: {fileID: 0}
 --- !u!1001 &468492320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9378,6 +9379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 608046644}
   playerHealthBar: {fileID: 1026451812}
+  inputManager: {fileID: 110275407}
 --- !u!65 &1087157755
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13287,7 +13289,7 @@ PrefabInstance:
     - target: {fileID: 1660926691383663126, guid: 1beb1e6c4f59e8a4ba66fddcc42e00ef,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3307228
+      value: 1.4777228
       objectReference: {fileID: 0}
     - target: {fileID: 1660926691383663126, guid: 1beb1e6c4f59e8a4ba66fddcc42e00ef,
         type: 3}
