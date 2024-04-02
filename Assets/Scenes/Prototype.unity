@@ -2249,6 +2249,12 @@ CapsuleCollider:
   m_Height: 1.9388562
   m_Direction: 1
   m_Center: {x: -0, y: 0.92410904, z: 0}
+--- !u!95 &246486807 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 8d8e7bbd78175464f9417e3a56157de9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1081354142}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &262671468
 GameObject:
   m_ObjectHideFlags: 0
@@ -2853,6 +2859,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 608046644}
   playerHealthBar: {fileID: 0}
   inputManager: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!1001 &468492320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9380,6 +9387,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 608046644}
   playerHealthBar: {fileID: 1026451812}
   inputManager: {fileID: 110275407}
+  animator: {fileID: 246486807}
 --- !u!65 &1087157755
 BoxCollider:
   m_ObjectHideFlags: 0

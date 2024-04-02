@@ -13,6 +13,7 @@ public class AttackStateA : StateMachineBehaviour
     private const string _SPECIALATTACK = "Special Attack";
     private float activateSuperAttack;
 
+    private bool enemyIsAttacking=false;
 
     private float timer =0f;
  
@@ -32,6 +33,8 @@ public class AttackStateA : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        enemyIsAttacking = true;
+
         animator.transform.LookAt(playerPos);
 
         timer += Time.deltaTime;
@@ -47,5 +50,11 @@ public class AttackStateA : StateMachineBehaviour
     {
         animator.SetBool(_ATTACK, false);   
         animator.SetBool(_MOVE, true);
+        enemyIsAttacking=false;
+    }
+
+    public bool EnemyAttacking()
+    {
+        return enemyIsAttacking;
     }
 }

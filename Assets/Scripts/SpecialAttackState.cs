@@ -11,7 +11,7 @@ public class SpecialAttackState : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool(_SPECIALATTACK, false);
-        animator.SetBool(_IDLE, true);  
+        animator.SetBool(_IDLE, true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

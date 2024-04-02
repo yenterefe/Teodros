@@ -6,33 +6,45 @@ using System;
 
 public class EnemySword : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab;
-    [SerializeField] GameObject playerHealthBar;
-    [SerializeField] GameObject inputManager;
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject playerHealthBar;
+    [SerializeField] private GameObject inputManager;
+    [SerializeField] private Animator animator;
+
+    // Don't delete
+    //[SerializeField] private ParticleSystem sparkle;
+    //[SerializeField] private ParticleSystem blood;
+
     private GameInput gameInput;
 
     private float blockTimer = 0;
     private float enemySwordTimer = 0;
 
-    bool startBlockTimer =false;
-    bool startShieldTimer =false;
+    private bool startBlockTimer =false;
+    private bool startShieldTimer =false;
+    private bool isEnemyAttacking;
 
     private PlayerAnimation playerAnimation;
 
     private void Awake()
     {
         playerAnimation= playerPrefab.GetComponent<PlayerAnimation>();
-        gameInput= inputManager.GetComponent<GameInput>();
+        gameInput = inputManager.GetComponent<GameInput>();
     }
 
     private void Start()
     {
         gameInput.OnShieldPerformed += StartTimer;
         gameInput.OnShieldCanceled += CancelTimer;
+
+        //You will need this line for your other class!!!
+        animator.GetBehaviour<AttackStateA>().EnemyAttacking();
     }
 
     private void Update()
     {
+
+       isEnemyAttacking = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
        ManageShieldTimer();
        ManageEnemyAttackTimer();
        Parry();
@@ -44,13 +56,21 @@ public class EnemySword : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player") && shieldActive == false)
         {
-            playerHealthBar.GetComponent<Slider>().value -=20;        
+            playerHealthBar.GetComponent<Slider>().value -=20;
+
+            // play hit animation 
+            // blood.Play();
+
         }
 
-        if(other.gameObject.CompareTag("Shield") && shieldActive ==true)
+        if (other.gameObject.CompareTag("Shield") && shieldActive ==true)
         {
-            //enemySwordTimer += Time.deltaTime;
             startShieldTimer = true;
+            
+            // Don't delete
+            // sparkle.Play();
+
+            //play block animation
         }
 
         if(shieldActive == false)
@@ -93,7 +113,7 @@ public class EnemySword : MonoBehaviour
 
     private void Parry()
     {
-        if(startShieldTimer == true && startBlockTimer ==true)
+        if(startShieldTimer == true && startBlockTimer ==true && isEnemyAttacking ==true)
         {
             if (Mathf.Abs(blockTimer - enemySwordTimer) < 0.9f)
             {
