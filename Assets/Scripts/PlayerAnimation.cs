@@ -98,6 +98,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         input.OnLightAttackPerformed += LightAttack;
 
+        input.OnLightAttackCanceled += LightAttackCanceled;
+
         input.OnSwitchToSwordPerformed += SwordModeActivated;
 
         input.OnSwitchToRiflePerformed += RifleModeActivated;
@@ -123,11 +125,18 @@ public class PlayerAnimation : MonoBehaviour
     private void ActivateSword()
     {
         sword.SetActive(true);
+        Invoke("StartTimer", 10f);
+    }
+
+    private void StartTimer()
+    {
         startTimer = true;
     }
 
     private void LightAttack(object receiver, EventArgs e)
     {
+        startTimer = false;
+
         if (staminaDepleted == false)
         {
             lightAttack = true;
@@ -137,8 +146,6 @@ public class PlayerAnimation : MonoBehaviour
             sheatedSword.SetActive(false);
 
             sword.SetActive(true);
-
-            startTimer = true;
 
             playerAnim.SetBool(_ATTACKSWORDMOVEMENT, true);
 
@@ -154,15 +161,21 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
+    private void LightAttackCanceled(object receiver, EventArgs e)
+    {
+        startTimer = true;
+    }
+
     private void AimRifle(object receiver, EventArgs e)
     {
+        startTimer = false;
 
         aimCamera.SetActive(true);
 
         if (rifleAttack == true)
         {
             aimRifle = true;
-            startTimer = true;
+            //startTimer = true;
             playerAnim.SetBool(_AIMRIFLE, true);
         }
     }
@@ -173,6 +186,7 @@ public class PlayerAnimation : MonoBehaviour
 
         aimRifle = false;
         playerAnim.SetBool(_AIMRIFLE, false);
+        startTimer = true;
     }
 
     private void ShootRifle(object receiver, EventArgs e)
@@ -188,6 +202,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void StopShooting(object receiver, EventArgs e)
     {
+        
         playerAnim.SetBool(_SHOOT, false);
         Invoke("DelayAimCamera", delayActiveCamera);
         rifleShot = false;

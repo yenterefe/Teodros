@@ -5831,6 +5831,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1694728589}
+  - {fileID: 1379170411}
   m_Father: {fileID: 1622251630}
   m_LocalEulerAnglesHint: {x: -170, y: 0, z: -89.25}
 --- !u!65 &747686526
@@ -9883,7 +9884,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1175920057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10874,6 +10875,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1510918135}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1379170410
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1379170411}
+  m_Layer: 0
+  m_Name: Sparkle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1379170411
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379170410}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.05701726, y: 0.7048045, z: 0.70399743, w: 0.066237055}
+  m_LocalPosition: {x: -0.11225079, y: 0.23620513, z: 0.06226346}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 747686525}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1393429245
 GameObject:
   m_ObjectHideFlags: 0
