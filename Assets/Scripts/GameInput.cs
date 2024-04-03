@@ -111,10 +111,10 @@ public class GameInput : MonoBehaviour
 
     private void RifleAim_canceled(InputAction.CallbackContext obj)
     {
-        if(OnRifleAimCanceled != null)
+        if (OnRifleAimCanceled != null)
         {
-            OnRifleAimCanceled(this, EventArgs.Empty);  
-        }
+            OnRifleAimCanceled(this, EventArgs.Empty);
+        }  
     }
 
     private void RifleAim_performed(InputAction.CallbackContext obj)

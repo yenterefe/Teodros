@@ -170,10 +170,9 @@ public class PlayerAnimation : MonoBehaviour
     {
         startTimer = false;
 
-        aimCamera.SetActive(true);
-
         if (rifleAttack == true)
         {
+            aimCamera.SetActive(true);
             aimRifle = true;
             //startTimer = true;
             playerAnim.SetBool(_AIMRIFLE, true);
