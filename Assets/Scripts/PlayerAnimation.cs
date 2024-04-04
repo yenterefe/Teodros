@@ -56,6 +56,11 @@ public class PlayerAnimation : MonoBehaviour
     private int fireRifle;
     private int swordMovementAnimation;
     private int sheatingSword;
+    private int swordButtonPressed = 0;
+    private int riffleButtonPressed = 0;
+
+
+
     private float timer = 0;
     private float blockSpeed = 0;
 
@@ -125,7 +130,7 @@ public class PlayerAnimation : MonoBehaviour
     private void ActivateSword()
     {
         sword.SetActive(true);
-        Invoke("StartTimer", 10f);
+        //Invoke("StartTimer", 10f);
     }
 
     private void StartTimer()
@@ -225,6 +230,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void RifleModeActivated(object receiver, EventArgs e)
     {
+        riffleButtonPressed++;
         shoulderRifle.SetActive(false);
         rifle.SetActive(true);
 
@@ -239,12 +245,25 @@ public class PlayerAnimation : MonoBehaviour
 
     private void SwordModeActivated(object receiver, EventArgs e)
     {
-        rifleAttack=false;
+        swordButtonPressed++;
+        rifleAttack =false;
         playerAnim.SetTrigger(_WITHDRAWSWORD);
         playerAnim.SetBool(_ATTACKSWORDMOVEMENT, true);
 
         Invoke("DeactivateSheatingSword", activateSheatedSwordTimer);
         Invoke("ActivateSword", activateSwordTimer);
+
+        if (swordButtonPressed % 2 == 0)
+        {
+            playerAnim.SetTrigger(_TUCKSWORD);
+            playerAnim.ResetTrigger(_WITHDRAWSWORD);
+            CancelInvoke("DeactivateSheatingSword");
+            CancelInvoke("ActivateSword");
+            sword.SetActive(false);
+            sheatedSword.SetActive(true);
+            playerAnim.SetBool(_ATTACKSWORDMOVEMENT, false);
+            playerAnim.SetBool(_UNARMEDMOVEMENT, true);
+        }
     }
 
 
@@ -351,5 +370,4 @@ public class PlayerAnimation : MonoBehaviour
             }
         }
     }
-
 }
