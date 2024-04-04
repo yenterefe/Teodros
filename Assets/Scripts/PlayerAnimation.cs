@@ -130,7 +130,7 @@ public class PlayerAnimation : MonoBehaviour
     private void ActivateSword()
     {
         sword.SetActive(true);
-        //Invoke("StartTimer", 10f);
+        Invoke("StartTimer", 10f);
     }
 
     private void StartTimer()
@@ -239,15 +239,36 @@ public class PlayerAnimation : MonoBehaviour
 
         rifleAttack = true;
         playerAnim.SetTrigger(_WITHDRAWRIFLE);
+        playerAnim.SetBool(_UNARMEDMOVEMENT, false);
         playerAnim.SetBool(_ATTACKSWORDMOVEMENT, false);
         playerAnim.SetBool(_ATTACKRIFLEMOVEMENT, true);
+
+        if (riffleButtonPressed % 2 == 0)
+        {
+            playerAnim.SetTrigger(_TUCKRIFLE);
+            playerAnim.ResetTrigger(_WITHDRAWSWORD);
+            playerAnim.ResetTrigger(_WITHDRAWRIFLE);
+            rifle.SetActive(false);
+            shoulderRifle.SetActive(true);
+            playerAnim.SetBool(_ATTACKRIFLEMOVEMENT, false);
+            playerAnim.SetBool(_UNARMEDMOVEMENT, true);
+        }
+
     }
 
     private void SwordModeActivated(object receiver, EventArgs e)
     {
         swordButtonPressed++;
+
+        if(lightAttack == true)
+        {
+            swordButtonPressed++;
+        }
+
         rifleAttack =false;
         playerAnim.SetTrigger(_WITHDRAWSWORD);
+        playerAnim.SetBool(_UNARMEDMOVEMENT, false);
+        playerAnim.SetBool(_ATTACKRIFLEMOVEMENT, false);
         playerAnim.SetBool(_ATTACKSWORDMOVEMENT, true);
 
         Invoke("DeactivateSheatingSword", activateSheatedSwordTimer);
@@ -257,6 +278,7 @@ public class PlayerAnimation : MonoBehaviour
         {
             playerAnim.SetTrigger(_TUCKSWORD);
             playerAnim.ResetTrigger(_WITHDRAWSWORD);
+            playerAnim.ResetTrigger(_WITHDRAWRIFLE);
             CancelInvoke("DeactivateSheatingSword");
             CancelInvoke("ActivateSword");
             sword.SetActive(false);
@@ -265,7 +287,6 @@ public class PlayerAnimation : MonoBehaviour
             playerAnim.SetBool(_UNARMEDMOVEMENT, true);
         }
     }
-
 
     private void Update()
     {
