@@ -13023,13 +13023,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1991029737}
   - component: {fileID: 1991029738}
+  - component: {fileID: 1991029739}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Blade
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1991029737
 Transform:
   m_ObjectHideFlags: 0
@@ -13067,6 +13068,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6191986, y: 1.3040109, z: 0.046353776}
   m_Center: {x: 0.29439044, y: 0.5986663, z: -0.003542787}
+--- !u!114 &1991029739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991029736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20cc5330db3c484381f8389a409beb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHealthBar: {fileID: 123637851}
+  animator: {fileID: 246486807}
 --- !u!1001 &1994259208
 PrefabInstance:
   m_ObjectHideFlags: 0

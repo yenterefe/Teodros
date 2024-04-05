@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerySword : MonoBehaviour
+public class PlayerSword : MonoBehaviour
 {
     [SerializeField] private GameObject enemyHealthBar;
     [SerializeField] private Animator animator;
