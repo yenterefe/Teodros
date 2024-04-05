@@ -11,6 +11,10 @@ public class EnemySword : MonoBehaviour
     [SerializeField] private GameObject inputManager;
     [SerializeField] private Animator animator;
 
+
+    [SerializeField] private GameObject originalSword;
+    [SerializeField] private GameObject warningSword;
+
     // Don't delete
     //[SerializeField] private ParticleSystem sparkle;
     //[SerializeField] private ParticleSystem blood;
@@ -23,6 +27,9 @@ public class EnemySword : MonoBehaviour
     private bool startBlockTimer =false;
     private bool startShieldTimer =false;
     private bool isEnemyAttacking;
+    private bool shieldActive;
+    private bool specialAttack;
+
 
     private PlayerAnimation playerAnimation;
 
@@ -30,6 +37,7 @@ public class EnemySword : MonoBehaviour
     {
         playerAnimation= playerPrefab.GetComponent<PlayerAnimation>();
         gameInput = inputManager.GetComponent<GameInput>();
+        
     }
 
     private void Start()
@@ -37,22 +45,43 @@ public class EnemySword : MonoBehaviour
         gameInput.OnShieldPerformed += StartTimer;
         gameInput.OnShieldCanceled += CancelTimer;
 
-        //You will need this line for your other class!!!
-        animator.GetBehaviour<AttackStateA>().EnemyAttacking();
+        originalSword.SetActive(true);
     }
 
     private void Update()
     {
+        shieldActive = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
+        specialAttack = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
 
-       isEnemyAttacking = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
-       ManageShieldTimer();
-       ManageEnemyAttackTimer();
-       Parry();
+
+        isEnemyAttacking = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
+        ManageShieldTimer();
+        ManageEnemyAttackTimer();
+        Parry();
+        ChangeSwordMaterial();
+        Debug.Log(specialAttack);
+    }
+    
+    private void ChangeSwordMaterial()
+    {
+        if (specialAttack == true)
+        {
+            originalSword.SetActive(false);
+            warningSword.SetActive(true);
+        }
+
+       else
+        {
+            originalSword.SetActive(true);
+            warningSword.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        bool shieldActive = playerAnimation.ShieldActive();
+        //bool shieldActive = playerAnimation.ShieldActive();
+
+        //bool specialAttack = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
 
         if (other.gameObject.CompareTag("Player") && shieldActive == false)
         {
@@ -61,16 +90,30 @@ public class EnemySword : MonoBehaviour
             // play hit animation 
             // blood.Play();
 
+            // player loses half of their life against the special attack 
+            if (specialAttack == true)
+            {
+                playerHealthBar.GetComponent<Slider>().value -= 50;
+            }
+
+
         }
 
         if (other.gameObject.CompareTag("Shield") && shieldActive ==true)
         {
             startShieldTimer = true;
-            
+
             // Don't delete
             // sparkle.Play();
 
+            // Don't delete
             //play block animation
+
+            // enemy cannot block special attack and must dodge 
+            if (specialAttack == true)
+            {
+                playerHealthBar.GetComponent<Slider>().value -= 50;
+            }
         }
 
         if(shieldActive == false)
@@ -79,6 +122,9 @@ public class EnemySword : MonoBehaviour
             startShieldTimer= false;
         }
     }
+
+
+    // After this is to caculate time in order to determine if player parried enemy's attack
 
     private void StartTimer(object receiver, EventArgs e)
     {

@@ -14,6 +14,8 @@ public class BlockStateA : StateMachineBehaviour
     private Transform playerPos;
     private Enemy enemyScript;
 
+    private bool isBlocking = false;
+
     private const string _MOVE = "Moving";
     private const string _ATTACK = "Attack";
     private const string _BLOCK = "Block";
@@ -21,6 +23,8 @@ public class BlockStateA : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        isBlocking = true;
+
         enemy = GameObject.Find("Enemy A");
 
         player = GameObject.Find("Player");
@@ -74,6 +78,13 @@ public class BlockStateA : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool(_MOVE, true);
+
+        isBlocking = false;
+    }
+
+    public bool Blocking()
+    {
+        return isBlocking;
     }
 
 }
