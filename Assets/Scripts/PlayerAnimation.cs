@@ -176,9 +176,13 @@ public class PlayerAnimation : MonoBehaviour
         if (rifleAttack == true)
         {
             startTimer = false;
-            aimCamera.SetActive(true);
             aimRifle = true;
             playerAnim.SetBool(_AIMRIFLE, true);
+        }
+
+        if(rifle.activeInHierarchy == true)
+        {
+            aimCamera.SetActive(true);
         }
     }
 

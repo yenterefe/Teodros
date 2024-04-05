@@ -79,7 +79,7 @@ public class EnemySword : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //bool shieldActive = playerAnimation.ShieldActive();
+        bool shieldActive = playerAnimation.ShieldActive();
 
         //bool specialAttack = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
 

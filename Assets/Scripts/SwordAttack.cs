@@ -32,68 +32,21 @@ public class SwordAttack : MonoBehaviour
 
         player = GameObject.Find("Player");
         
-        playerScript= GameObject.Find("Player").GetComponent<Player>();  
+        //playerScript= GameObject.Find("Player").GetComponent<Player>();  
 
     }
 
     private void Start()
     {
-        input.OnLightAttackPerformed += AttackPerformed;
+       
     }
 
     private void Update()
     {
         transform.LookAt(player.transform);
 
-        //Debug.Log("attack is " + attack);
-
-        //Debug.Log("enemy life is " + enemyLife);
-
-        //Debug.Log("Is second combo active " + secondCombo);
-
-        //Debug.Log( "Cancel speed is " + cancelAttackSpeed);
-
-        bool takeDamage = playerScript.EnemyDamage();
-
-        if (takeDamage)
-        {
-            enemyLife -= gunDamage;
-        }
-
-        if(enemyLife < 0)
-        {
-            //Debug.Log("Enemy is dead");
-        }
     }
-    // Have to refactor code to go to Enemy script 
-    private void AttackPerformed(object receiver, EventArgs e)
-    {
-        attack = true;
-
-        secondCombo = playerScript.SecondComboDamage();
-
-        if (secondCombo == true)
-        {
-            cancelAttackSpeed = 2.4f;
-        }
-
-
-        Invoke("CancelAttack", cancelAttackSpeed);
-    }
-
-    private void CancelAttack()
-    {
-        attack=false;   
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name== gameObjectName && attack == true)
-        {
-            enemyLife-=swordDamage;
-            swordTimer += Time.deltaTime;   
-        }
-    }
+  
 
     public float SwordTimer()
     {
