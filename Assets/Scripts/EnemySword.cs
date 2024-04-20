@@ -59,7 +59,6 @@ public class EnemySword : MonoBehaviour
         ManageEnemyAttackTimer();
         Parry();
         ChangeSwordMaterial();
-        Debug.Log(specialAttack);
     }
     
     private void ChangeSwordMaterial()

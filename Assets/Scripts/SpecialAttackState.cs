@@ -28,8 +28,7 @@ public class SpecialAttackState : StateMachineBehaviour
         specialAttack = false;
     }
 
-   
-
+  
     public bool SpecialAttack()
     {
         return specialAttack;

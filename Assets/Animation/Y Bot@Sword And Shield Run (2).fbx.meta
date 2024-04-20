@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: da1765e935adeb94188f350133bfbcd9
+guid: 55b28d7feba506a459fde212e5dc3cdd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,18 +33,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: One Hand Sword Combo
+      name: Sword And Shield Run
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 136
+      lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

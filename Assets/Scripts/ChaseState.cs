@@ -26,9 +26,6 @@ public class ChaseState : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
-       
-
         enemy = GameObject.Find("Enemy A");
 
         player = GameObject.Find("Player");
@@ -52,7 +49,7 @@ public class ChaseState : StateMachineBehaviour
 
        
 
-        if (distance < 2)
+        if (distance < 2f)
             {
                 agent.SetDestination(agent.transform.position);
 
