@@ -28,7 +28,13 @@ public class PlayerAnimation : MonoBehaviour
 
     [SerializeField] private ParticleSystem gunSmoke;
 
-    [SerializeField] GameObject staminaBar; 
+    [SerializeField] GameObject staminaBar;
+
+    [SerializeField] GameObject ammoIndicator; 
+
+    [SerializeField] private GameObject manager;
+
+    private GameManager gameManager;
 
     private GameInput input;
     private Player player;
@@ -59,6 +65,8 @@ public class PlayerAnimation : MonoBehaviour
     private int swordButtonPressed = 0;
     private int riffleButtonPressed = 0;
 
+    private int totalAmmunition; 
+
 
 
     private float timer = 0;
@@ -81,6 +89,7 @@ public class PlayerAnimation : MonoBehaviour
         input = InputManager.GetComponent<GameInput>();
         playerAnim = GetComponent<Animator>();
         enemySwordAttack= enemySword.GetComponent<EnemySword>();
+        gameManager = manager.GetComponent<GameManager>();  
 
         moveXID = Animator.StringToHash("MoveX");
         moveZID = Animator.StringToHash("MoveZ");
@@ -189,7 +198,7 @@ public class PlayerAnimation : MonoBehaviour
     private void CancelAim(object receiver, EventArgs e)
     {
         aimCamera.SetActive(false);
-
+        ammoIndicator.SetActive(false);
         aimRifle = false;
         playerAnim.SetBool(_AIMRIFLE, false);
 
@@ -201,7 +210,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void ShootRifle(object receiver, EventArgs e)
     {
-        if (aimRifle == true)
+        if (aimRifle == true && totalAmmunition > 0)
         {
             gunSmoke.Play();
             rifleShot = true;
@@ -238,9 +247,9 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (rifle.activeInHierarchy== false)
         {
+            ammoIndicator.SetActive(true);
             shoulderRifle.SetActive(false);
             rifle.SetActive(true);
-
             sword.SetActive(false);
             sheatedSword.SetActive(true);
             startTimer = true;
@@ -253,6 +262,7 @@ public class PlayerAnimation : MonoBehaviour
 
         else
         {
+            ammoIndicator.SetActive(false);
             startTimer = false;
             playerAnim.SetTrigger(_TUCKRIFLE);
             playerAnim.ResetTrigger(_WITHDRAWSWORD);
@@ -300,6 +310,8 @@ public class PlayerAnimation : MonoBehaviour
 
         // Sets timer for idle animation to kick in
         IdleTimer();
+
+        totalAmmunition = gameManager.GetAmmunition();
 
         Debug.Log(timer);
     }

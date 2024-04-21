@@ -2,24 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System;
+
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject staminaBar;
     [SerializeField] private GameObject playerBar;
     [SerializeField] private GameObject inputManager;
+    [SerializeField] private GameObject playerPrefab;
+
+    [SerializeField] private TextMeshProUGUI ammoIndicator;
+
     [SerializeField] private float depletion = 0.1f;
     [SerializeField] private float recuperation = 0.05f;
+
     private GameInput gameInput;
+
+    private PlayerAnimation playerAnimation;
+
     private bool depleteStamina=false;
     private bool recuperateStamina = false;
-    
+    private bool isPlayerAiming;
 
+    private int totalAmmunition = 5;
+    private int firedAmmunition = 1;
 
     private void Awake()
     {
         gameInput= inputManager.GetComponent<GameInput>();  
+        playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
     }
 
     // Start is called before the first frame update
@@ -27,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         gameInput.OnLightAttackPerformed += DepleteStamina;
         gameInput.OnLightAttackCanceled += RecuperateStamina;
+        gameInput.OnRifleFirePerformed += AmmoManager;
     }
 
     // Update is called once per frame
@@ -34,6 +48,15 @@ public class GameManager : MonoBehaviour
     {
         ManageStaminaBar();
         ManagePlayerHealthBar();
+
+        isPlayerAiming = playerAnimation.IsPlayerAiming();
+
+        ammoIndicator.text = "Ammo: " + totalAmmunition.ToString();
+
+        if (totalAmmunition <= 0)
+        {
+            ammoIndicator.text = "Ammo: " + 0;
+        }
     }
 
 
@@ -74,5 +97,18 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Game Over");
         }
+    }
+
+    private void AmmoManager(object receiver, EventArgs e)
+    {
+        if(isPlayerAiming ==true)
+        {
+            totalAmmunition -= firedAmmunition;
+        }
+    }
+
+    public int GetAmmunition()
+    {
+        return totalAmmunition;
     }
 }
