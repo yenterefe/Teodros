@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 
 
@@ -8,14 +9,20 @@ public class AttackStateA : StateMachineBehaviour
 {
     private Transform playerPos;
 
+    private GameObject enemy;
+
     private float distance;
 
-    private const string _MOVE = "Moving";
-    private const string _ATTACK = "Attack";
-    private const string _SPECIALATTACK = "Special Attack";
-    private const string _JUMPBACK = "Run Back";
+    private const string MOVE = "Moving";
+    private const string ATTACK = "Attack";
+    private const string SPECIAL_ATTACK = "Special Attack";
+    private const string JUMP_BACK = "Run Back";
+
+    private NavMeshAgent agent;
 
     private float activateSuperAttack;
+
+    float attackDistance = 2f; 
 
     private bool enemyIsAttacking=false;
 
@@ -25,13 +32,20 @@ public class AttackStateA : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(_SPECIALATTACK, false);
+
+        animator.SetBool(SPECIAL_ATTACK, false);
 
         timer = 0;
 
         playerPos = GameObject.Find("Player").transform;
+
+        enemy = GameObject.Find("Enemy A");
+
+        agent = enemy.GetComponent<NavMeshAgent>(); 
         
         activateSuperAttack = Random.Range(2, 7f);
+
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -39,20 +53,25 @@ public class AttackStateA : StateMachineBehaviour
     {
         distance = Vector3.Distance(animator.transform.position, playerPos.position);   
 
-        enemyIsAttacking = true;
-
         animator.transform.LookAt(playerPos);
 
         timer += Time.deltaTime;
 
+        enemyIsAttacking = true;
+
         if (timer > activateSuperAttack)
         {
-            animator.SetBool(_SPECIALATTACK, true);
+            animator.SetBool(SPECIAL_ATTACK, true);
         }
 
-        if (distance < 2f )
+        if(distance> attackDistance)
         {
-            animator.SetBool(_JUMPBACK, true);
+            animator.SetBool(MOVE, true);
+        }
+
+        if (distance < attackDistance)
+        {
+            animator.SetBool(JUMP_BACK, true);
         }
 
         Debug.Log(distance);
@@ -61,18 +80,8 @@ public class AttackStateA : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(_ATTACK, false);
+        animator.SetBool(ATTACK, false);
         enemyIsAttacking = false;
-
-        //animator.SetBool(_MOVE, true);
-
-        // Delete this if it's not working 
-        if (distance< 1f)
-        {
-            animator.SetBool(_JUMPBACK, true);
-        }
-        
-       
     }
 
     public bool EnemyAttacking()

@@ -47,9 +47,7 @@ public class ChaseState : StateMachineBehaviour
 
         distance = Vector3.Distance(animator.transform.position, player.transform.position);
 
-       
-
-        if (distance < 2f)
+        if (distance <= 2f)
             {
                 agent.SetDestination(agent.transform.position);
 

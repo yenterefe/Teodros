@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     private bool lightAttack;
     private bool activateSecondCombo = false;
     private bool isAiming;
+    private bool enemySighted = false;   
 
     private Ray ray;
 
@@ -159,6 +160,7 @@ public class Player : MonoBehaviour
                 Debug.DrawRay(transform.position, centerScreen, Color.red);
                 if (hit.collider.gameObject.name == "Enemy")
                 {
+                    enemySighted = true; 
                     Debug.Log("Enemy onsite!");
                     noEnemyCrossHair.SetActive(false);
                     enemyCrossHair.SetActive(true);
@@ -221,6 +223,11 @@ public class Player : MonoBehaviour
     public bool IsAiming()
     {
         return isAiming;
+    }
+
+    public bool IsEnemySighted()
+    {
+        return enemySighted;
     }
 }
 

@@ -5262,9 +5262,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   staminaBar: {fileID: 877148428}
-  playerBar: {fileID: 1026451812}
+  playerHealthBar: {fileID: 1026451812}
+  enemyHealthBar: {fileID: 123637851}
   inputManager: {fileID: 110275407}
   playerPrefab: {fileID: 608046644}
+  playerObject: {fileID: 94655847}
   ammoIndicator: {fileID: 40994672}
   depletion: 0.1
   recuperation: 0.01

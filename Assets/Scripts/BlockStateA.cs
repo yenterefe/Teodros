@@ -16,9 +16,9 @@ public class BlockStateA : StateMachineBehaviour
 
     private bool isBlocking = false;
 
-    private const string _MOVE = "Moving";
-    private const string _ATTACK = "Attack";
-    private const string _BLOCK = "Block";
+    private const string MOVE = "Moving";
+    private const string ATTACK = "Attack";
+    private const string BLOCK = "Block";
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -47,8 +47,8 @@ public class BlockStateA : StateMachineBehaviour
 
         bool playerIsAttacking = enemyScript.PlayerAttacking();
 
-        animator.SetBool(_MOVE, false);
-        animator.SetBool(_ATTACK, false);
+        animator.SetBool(MOVE, false);
+        animator.SetBool(ATTACK, false);
 
         if (distance <2)
         {
@@ -69,7 +69,7 @@ public class BlockStateA : StateMachineBehaviour
             
             if (playerIsAttacking == false)
             {
-                animator.SetBool(_BLOCK, false);
+                animator.SetBool(BLOCK, false);
             }
         }
     }
@@ -77,7 +77,7 @@ public class BlockStateA : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(_MOVE, true);
+        animator.SetBool(MOVE, true);
 
         isBlocking = false;
     }

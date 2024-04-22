@@ -9,9 +9,11 @@ using System;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject staminaBar;
-    [SerializeField] private GameObject playerBar;
+    [SerializeField] private GameObject playerHealthBar;
+    [SerializeField] private GameObject enemyHealthBar;
     [SerializeField] private GameObject inputManager;
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject playerObject;
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
 
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float recuperation = 0.05f;
 
     private GameInput gameInput;
+    private Player player;
 
     private PlayerAnimation playerAnimation;
 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
     {
         gameInput= inputManager.GetComponent<GameInput>();  
         playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
+        player = playerObject.GetComponent<Player>();
     }
 
     // Start is called before the first frame update
@@ -56,6 +60,14 @@ public class GameManager : MonoBehaviour
         if (totalAmmunition <= 0)
         {
             ammoIndicator.text = "Ammo: " + 0;
+        }
+
+        bool enemySighted = player.IsEnemySighted();
+        bool playershooting = playerAnimation.IsRifleShot();
+
+        if(enemySighted == true && playershooting == true)
+        {
+            enemyHealthBar.GetComponent<Slider>().value = 0;
         }
     }
 
@@ -93,7 +105,7 @@ public class GameManager : MonoBehaviour
 
     private void ManagePlayerHealthBar()
     {
-        if(playerBar.GetComponent<Slider>().value <=0)
+        if(playerHealthBar.GetComponent<Slider>().value <=0)
         {
             Debug.Log("Game Over");
         }

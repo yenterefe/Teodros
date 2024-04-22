@@ -24,8 +24,8 @@ public class EnemySword : MonoBehaviour
     private float blockTimer = 0;
     private float enemySwordTimer = 0;
 
-    private bool startBlockTimer =false;
-    private bool startShieldTimer =false;
+    private bool startBlockTimer = false;
+    private bool startShieldTimer = false;
     private bool isEnemyAttacking;
     private bool shieldActive;
     private bool specialAttack;
@@ -35,9 +35,9 @@ public class EnemySword : MonoBehaviour
 
     private void Awake()
     {
-        playerAnimation= playerPrefab.GetComponent<PlayerAnimation>();
+        playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
         gameInput = inputManager.GetComponent<GameInput>();
-        
+
     }
 
     private void Start()
@@ -60,7 +60,7 @@ public class EnemySword : MonoBehaviour
         Parry();
         ChangeSwordMaterial();
     }
-    
+
     private void ChangeSwordMaterial()
     {
         if (specialAttack == true)
@@ -69,7 +69,7 @@ public class EnemySword : MonoBehaviour
             warningSword.SetActive(true);
         }
 
-       else
+        else
         {
             originalSword.SetActive(true);
             warningSword.SetActive(false);
@@ -82,9 +82,9 @@ public class EnemySword : MonoBehaviour
 
         //bool specialAttack = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
 
-        if (other.gameObject.CompareTag("Player") && shieldActive == false)
+        if (other.gameObject.CompareTag("Player") && shieldActive == false && isEnemyAttacking == true)
         {
-            playerHealthBar.GetComponent<Slider>().value -=20;
+            playerHealthBar.GetComponent<Slider>().value -= 20;
 
             // play hit animation 
             // blood.Play();
@@ -94,11 +94,9 @@ public class EnemySword : MonoBehaviour
             {
                 playerHealthBar.GetComponent<Slider>().value -= 50;
             }
-
-
         }
 
-        if (other.gameObject.CompareTag("Shield") && shieldActive ==true)
+        if (other.gameObject.CompareTag("Shield") && shieldActive == true)
         {
             startShieldTimer = true;
 
@@ -115,10 +113,10 @@ public class EnemySword : MonoBehaviour
             }
         }
 
-        if(shieldActive == false)
+        if (shieldActive == false)
         {
-            enemySwordTimer= 0;
-            startShieldTimer= false;
+            enemySwordTimer = 0;
+            startShieldTimer = false;
         }
     }
 
@@ -132,7 +130,7 @@ public class EnemySword : MonoBehaviour
 
     private void CancelTimer(object receiver, EventArgs e)
     {
-        startBlockTimer= false;
+        startBlockTimer = false;
     }
 
     private void ManageShieldTimer()
@@ -158,12 +156,12 @@ public class EnemySword : MonoBehaviour
 
     private void Parry()
     {
-        if(startShieldTimer == true && startBlockTimer ==true && isEnemyAttacking ==true)
+        if (startShieldTimer == true && startBlockTimer == true && isEnemyAttacking == true)
         {
             if (Mathf.Abs(blockTimer - enemySwordTimer) < 0.9f)
             {
                 Debug.Log("Parry");
-                startShieldTimer=false;
+                startShieldTimer = false;
             }
         }
     }
