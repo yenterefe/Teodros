@@ -231,7 +231,20 @@ public class PlayerAnimation : MonoBehaviour
     {
         shieldActive = true;
         playerAnim.CrossFade(block, animationTransition);
-        blockSpeed+=Time.deltaTime;
+
+        // if player has rifle and needs to block, it will automatically activate sword so the ammmunition indicator will be deactivated 
+        if (ammoIndicator.activeInHierarchy == true)
+        {
+            ammoIndicator.SetActive(false);
+        }
+
+        if (rifle.activeInHierarchy == true)
+        { 
+            rifle.SetActive(false);
+            shoulderRifle.SetActive(true);
+        }
+
+        blockSpeed += Time.deltaTime;
         //Debug.Log($"Block speed is {blockSpeed}");
     }
 
@@ -239,15 +252,6 @@ public class PlayerAnimation : MonoBehaviour
     {
         blockSpeed = 0;
         shieldActive=false;
-        rifle.SetActive(false);
-        shoulderRifle.SetActive(true);
-
-        // if player has rifle and needs to block, it will automatically activate sword so the ammmunition indicator will be deactivated 
-        if(ammoIndicator.activeInHierarchy==true)
-        {
-            ammoIndicator.SetActive(false);
-        }
-
         playerAnim.CrossFade(swordMovementAnimation, animationTransition);
         sword.SetActive(true);
     }
