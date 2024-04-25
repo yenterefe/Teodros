@@ -5,6 +5,8 @@ public class PlayerSword : MonoBehaviour
 {
     [SerializeField] private GameObject enemyHealthBar;
     [SerializeField] private Animator animator;
+    private bool shieldActive;
+   
 
     // Don't delete
     //[SerializeField] private ParticleSystem sparkle;
@@ -12,8 +14,11 @@ public class PlayerSword : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        bool shieldActive = animator.GetBehaviour<BlockStateA>().Blocking();
-
+        if (animator.isActiveAndEnabled ==true)
+        {
+            shieldActive = animator.GetBehaviour<BlockStateA>().Blocking();
+        }
+      
         if (other.gameObject.CompareTag("Enemy") && shieldActive == false)
         {
             enemyHealthBar.GetComponent<Slider>().value -=20;

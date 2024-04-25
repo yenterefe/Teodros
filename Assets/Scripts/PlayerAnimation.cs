@@ -239,6 +239,15 @@ public class PlayerAnimation : MonoBehaviour
     {
         blockSpeed = 0;
         shieldActive=false;
+        rifle.SetActive(false);
+        shoulderRifle.SetActive(true);
+
+        // if player has rifle and needs to block, it will automatically activate sword so the ammmunition indicator will be deactivated 
+        if(ammoIndicator.activeInHierarchy==true)
+        {
+            ammoIndicator.SetActive(false);
+        }
+
         playerAnim.CrossFade(swordMovementAnimation, animationTransition);
         sword.SetActive(true);
     }
