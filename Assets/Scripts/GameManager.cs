@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private bool depleteStamina=false;
     private bool recuperateStamina = false;
     private bool isPlayerAiming;
+    private bool isPlayerRunning = false;
 
     private int totalAmmunition = 5;
     private int firedAmmunition = 1;
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
         gameInput.OnLightAttackPerformed += DepleteStamina;
         gameInput.OnLightAttackCanceled += RecuperateStamina;
         gameInput.OnRifleFirePerformed += AmmoManager;
+        gameInput.OnPlayerRunningPeformed += PlayerRunning;
+        gameInput.OnPlayerRunningCanceled += PlayerWalking;
     }
 
     // Update is called once per frame
@@ -71,6 +74,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void PlayerRunning(object receiver, EventArgs e)
+    {
+        isPlayerRunning = true;
+    }
+
+    private void PlayerWalking(object receiver, EventArgs e)
+    {
+        isPlayerRunning = false;
+    }
 
     private void DepleteStamina(object receiver, EventArgs e)
     {
@@ -92,12 +104,12 @@ public class GameManager : MonoBehaviour
 
     private void ManageStaminaBar()
     {
-        if (depleteStamina == true)
+        if (depleteStamina == true || isPlayerRunning ==true)
         {
             staminaBar.GetComponent<Slider>().value -= depletion;
         }
 
-        if (recuperateStamina == true)
+        if (recuperateStamina == true || isPlayerRunning ==false)
         {
             staminaBar.GetComponent<Slider>().value += recuperation;
         }

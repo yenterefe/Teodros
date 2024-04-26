@@ -51,10 +51,11 @@ public class PlayerAnimation : MonoBehaviour
     private bool lightAttack= false;
     private bool lightComboAttack = false;
     private bool staminaDepleted = false;
+    private bool isPlayerRunning = false;
 
 
     private int moveXID;
-    private int moveZID;
+    private int moveZID; 
     private int lightAttackAnimation1;
     private int lightAttackAnimation2;
     private int block;
@@ -65,9 +66,7 @@ public class PlayerAnimation : MonoBehaviour
     private int swordButtonPressed = 0;
     private int riffleButtonPressed = 0;
 
-    private int totalAmmunition; 
-
-
+    private int totalAmmunition;
 
     private float timer = 0;
     private float blockSpeed = 0;
@@ -82,6 +81,7 @@ public class PlayerAnimation : MonoBehaviour
     private const string _AIMRIFLE = "setAiming";
     private const string _SHOOT= "shoot";
     private const string _BLOCK = "block";
+    private const string running = "Running";
 
     private void Awake()
     {
@@ -128,8 +128,22 @@ public class PlayerAnimation : MonoBehaviour
 
         input.OnShieldPerformed += BlockAttack;
 
-        input.OnShieldCanceled += CancelBlock; 
+        input.OnShieldCanceled += CancelBlock;
+
+        input.OnPlayerRunningPeformed += PlayerRunning;
+
+        input.OnPlayerRunningCanceled += PlayerWalking;
     }
+    private void PlayerRunning(object receiver, EventArgs e)
+    {
+        isPlayerRunning = true;
+    }
+
+    private void PlayerWalking(object receiver, EventArgs e)
+    {
+        isPlayerRunning = false;
+    }
+
 
     private void DeactivateSheatingSword()
     {
@@ -230,6 +244,10 @@ public class PlayerAnimation : MonoBehaviour
     private void BlockAttack(object receiver, EventArgs e)
     {
         shieldActive = true;
+
+        sword.SetActive(true);
+        sheatedSword.SetActive(false);
+
         playerAnim.CrossFade(block, animationTransition);
 
         // if player has rifle and needs to block, it will automatically activate sword so the ammmunition indicator will be deactivated 
@@ -260,6 +278,12 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (rifle.activeInHierarchy== false)
         {
+            if(sword.activeInHierarchy ==true)
+            {
+                sword.SetActive(false); 
+                sheatedSword.SetActive(true);
+            }
+
             ammoIndicator.SetActive(true);
             shoulderRifle.SetActive(false);
             rifle.SetActive(true);
@@ -291,6 +315,12 @@ public class PlayerAnimation : MonoBehaviour
     {
         if(sword.activeInHierarchy ==false)
         {
+            if(rifle.activeInHierarchy ==true)
+            {
+                rifle.SetActive(false);
+                shoulderRifle.SetActive(true);
+            }
+
             rifleAttack = false;
             playerAnim.SetTrigger(_WITHDRAWSWORD);
             playerAnim.SetBool(_UNARMEDMOVEMENT, false);
@@ -324,9 +354,15 @@ public class PlayerAnimation : MonoBehaviour
         // Sets timer for idle animation to kick in
         IdleTimer();
 
+        DeactivateAmmunition();
+
         totalAmmunition = gameManager.GetAmmunition();
 
+        ManageRunAnimation();
+
         Debug.Log(timer);
+
+       
     }
 
     private void DelayAimCamera()
@@ -369,6 +405,14 @@ public class PlayerAnimation : MonoBehaviour
         else
         {
             staminaDepleted = false;
+        }
+    }
+
+    private void DeactivateAmmunition()
+    {
+        if(!rifle.activeInHierarchy)
+        {
+            ammoIndicator.SetActive(false);
         }
     }
 
@@ -424,6 +468,25 @@ public class PlayerAnimation : MonoBehaviour
                 timer = 0;
                 playerAnim.SetBool(_UNARMEDMOVEMENT, true);
             }
+        }
+    }
+    
+
+    private void ManageRunAnimation()
+    {
+        if (isPlayerRunning == true && staminaDepleted == false)
+        {
+            playerAnim.SetBool(running, true);
+        }
+
+        else if (isPlayerRunning == true && staminaDepleted == true)
+        {
+            playerAnim.SetBool(running, false);
+        }
+
+        else
+        {
+            playerAnim.SetBool(running, false);
         }
     }
 }

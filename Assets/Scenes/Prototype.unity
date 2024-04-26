@@ -1746,6 +1746,7 @@ MonoBehaviour:
   enemyCrossHair: {fileID: 1725490009}
   rifle: {fileID: 660356148}
   target: {fileID: 1286462755}
+  staminaBar: {fileID: 877148428}
 --- !u!1 &110275407
 GameObject:
   m_ObjectHideFlags: 0

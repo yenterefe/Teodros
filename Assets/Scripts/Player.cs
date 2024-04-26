@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI; 
 
 
 public class Player : MonoBehaviour
@@ -50,6 +51,13 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject enemyCrossHair;
     [SerializeField] private GameObject rifle;
     [SerializeField] private GameObject target;
+
+    //Stamina
+    [SerializeField] private GameObject staminaBar;
+    
+    private float stamina;
+
+    private bool staminaDepleted = false;
     
     private string gameObjectName;
 
@@ -66,12 +74,16 @@ public class Player : MonoBehaviour
         gameInput.OnLightAttackPerformed += LightAttackPerformed;
         gameInput.OnRifleFirePerformed += ShotFiredPerformed;
         gameInput.OnRifleFireCanceled += ShotNotFired;
+        gameInput.OnPlayerRunningPeformed += PlayerRunning;
+        gameInput.OnPlayerRunningCanceled += PlayerWalking;
     }
 
     private void Update()
     {
         //Debug.Log("Is shot fired " + shotFired);
         //Debug.Log("Name of object aimed at " + gameObjectName);
+
+        ManageStamina();
     }
 
     private void FixedUpdate()
@@ -83,6 +95,25 @@ public class Player : MonoBehaviour
     public Vector3 Movement()
     {
         return moveDir;
+    }
+
+    private void PlayerRunning(object recevier, EventArgs e)
+    {
+        if(staminaDepleted == false)
+        {
+            directionSpeed = 5;
+        }
+
+        else
+        {
+            directionSpeed = 2; 
+        }
+        
+    }
+
+    private void PlayerWalking(object recevier, EventArgs e)
+    {
+        directionSpeed = 2;
     }
 
     private void LightAttackPerformed(object subscriber, EventArgs e)
@@ -228,6 +259,21 @@ public class Player : MonoBehaviour
     public bool IsEnemySighted()
     {
         return enemySighted;
+    }
+
+    private void ManageStamina()    
+    {
+        stamina = staminaBar.GetComponent<Slider>().value;
+
+        if(stamina <= 10f)
+        {
+            staminaDepleted = true;
+        }
+
+        else
+        {
+            staminaDepleted = false;
+        }
     }
 }
 

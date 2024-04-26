@@ -7,7 +7,7 @@ public class GameInput : MonoBehaviour
 {
     [SerializeField] GameObject player;
 
-    private PlayerAnimation playerAnimation;
+    //private PlayerAnimation playerAnimation;
 
     private PlayerInputActions inputActions;
 
@@ -27,10 +27,12 @@ public class GameInput : MonoBehaviour
     public EventHandler OnRifleFireCanceled;
     public EventHandler OnShieldPerformed;
     public EventHandler OnShieldCanceled;
+    public EventHandler OnPlayerRunningPeformed;
+    public EventHandler OnPlayerRunningCanceled;
 
     private void Awake()
     {
-        playerAnimation = player.GetComponent<PlayerAnimation>();
+        //playerAnimation = player.GetComponent<PlayerAnimation>();
 
         inputActions = new PlayerInputActions();
 
@@ -66,6 +68,26 @@ public class GameInput : MonoBehaviour
 
         inputActions.Player.Shield.canceled += Shield_canceled;
 
+        inputActions.Player.Run.performed += Run_performed;
+
+        inputActions.Player.Run.canceled += Run_canceled;
+    }
+
+    private void Run_canceled(InputAction.CallbackContext obj)
+    {
+        if(OnPlayerRunningCanceled != null)
+        {
+            OnPlayerRunningCanceled(this, EventArgs.Empty);
+        }
+    }
+
+    private void Run_performed(InputAction.CallbackContext obj)
+    {
+
+        if (OnPlayerRunningPeformed != null)
+        {
+            OnPlayerRunningPeformed(this, EventArgs.Empty);
+        }
     }
 
     private void Shield_canceled(InputAction.CallbackContext obj)
@@ -188,12 +210,3 @@ public class GameInput : MonoBehaviour
         return weaponSwitchButtonPressed;
     }
 }
-
-
-
-
-
-
-
-
-

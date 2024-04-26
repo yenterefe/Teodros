@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Run",
+                    "type": "Button",
+                    "id": "140fa627-ca27-41ea-b35f-2a845f4e3200",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -294,6 +303,17 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Shield",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "84ad5a0b-3f06-4361-9aab-d4a5d1d29705",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
