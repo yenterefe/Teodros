@@ -25,10 +25,11 @@ public class GameManager : MonoBehaviour
 
     private PlayerAnimation playerAnimation;
 
-    private bool depleteStamina=false;
+    private bool isStaminaDepleted=false;
     private bool recuperateStamina = false;
     private bool isPlayerAiming;
     private bool isPlayerRunning = false;
+    private bool isRifleOn;
 
     private int totalAmmunition = 5;
     private int firedAmmunition = 1;
@@ -58,6 +59,8 @@ public class GameManager : MonoBehaviour
 
         isPlayerAiming = playerAnimation.IsPlayerAiming();
 
+        isRifleOn = playerAnimation.IsRifleModeActivated();
+
         ammoIndicator.text = "Ammo: " + totalAmmunition.ToString();
 
         if (totalAmmunition <= 0)
@@ -65,10 +68,10 @@ public class GameManager : MonoBehaviour
             ammoIndicator.text = "Ammo: " + 0;
         }
 
-        bool enemySighted = player.IsEnemySighted();
-        bool playershooting = playerAnimation.IsRifleShot();
+        bool isEnemySighted = player.IsEnemySighted();
+        bool isPlayershooting = playerAnimation.IsRifleShot();
 
-        if(enemySighted == true && playershooting == true)
+        if(isEnemySighted && isPlayershooting)
         {
             enemyHealthBar.GetComponent<Slider>().value = 0;
         }
@@ -86,9 +89,9 @@ public class GameManager : MonoBehaviour
 
     private void DepleteStamina(object receiver, EventArgs e)
     {
-        if(staminaBar.GetComponent<Slider>().value != 0)
+        if(staminaBar.GetComponent<Slider>().value != 0 && !isPlayerAiming && !isRifleOn)
         {
-           depleteStamina = true;
+           isStaminaDepleted = true;
            recuperateStamina= false;
         }
     }
@@ -98,13 +101,13 @@ public class GameManager : MonoBehaviour
         if(staminaBar.GetComponent<Slider>().value != 100)
         {
             recuperateStamina = true;
-            depleteStamina = false;
+            isStaminaDepleted = false;
         }
     }
 
     private void ManageStaminaBar()
     {
-        if (depleteStamina == true || isPlayerRunning ==true)
+        if (isStaminaDepleted || isPlayerRunning)
         {
             staminaBar.GetComponent<Slider>().value -= depletion;
         }
@@ -125,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     private void AmmoManager(object receiver, EventArgs e)
     {
-        if(isPlayerAiming ==true)
+        if(isPlayerAiming)
         {
             totalAmmunition -= firedAmmunition;
         }
