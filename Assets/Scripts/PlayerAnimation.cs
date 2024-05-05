@@ -41,16 +41,16 @@ public class PlayerAnimation : MonoBehaviour
     private Animator playerAnim;
     private EnemySword enemySwordAttack;
 
-    private bool rifleAttack = false;
+    private bool isRifleAttackActive = false;
     private bool startTimer = false;
     private bool resetTimer = false;
-    private bool playerisIdle = false;
-    private bool aimRifle = false;
-    private bool rifleShot = false;
-    private bool shieldActive =false;
-    private bool lightAttack= false;
-    private bool lightComboAttack = false;
-    private bool staminaDepleted = false;
+    private bool isPlayerIdle = false;
+    private bool isRifleAiming = false;
+    private bool isRifleShot = false;
+    private bool isShieldActive =false;
+    private bool isLightAttackActive= false;
+    private bool isLightComboAttackActive = false;
+    private bool isStaminaDepleted = false;
     private bool isPlayerRunning = false;
     private bool isRifleModeActivated = false;
 
@@ -147,9 +147,9 @@ public class PlayerAnimation : MonoBehaviour
     {
         startTimer = false;
 
-        if (!staminaDepleted && !rifleAttack)
+        if (!isStaminaDepleted && !isRifleAttackActive)
         {
-            lightAttack = true;
+            isLightAttackActive = true;
             rifle.SetActive(false);
             shoulderRifle.SetActive(true);
 
@@ -167,7 +167,7 @@ public class PlayerAnimation : MonoBehaviour
 
             if (player.SecondCombo())
             {
-                lightComboAttack = true;
+                isLightComboAttackActive = true;
                 playerAnim.CrossFade(lightAttackAnimation2, animationTransition);
                 timer = 0;
                 resetTimer = true;
@@ -184,7 +184,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         aimCamera.SetActive(false);
         ammoIndicator.SetActive(false);
-        aimRifle = false;
+        isRifleAiming = false;
         playerAnim.SetBool(AIM_RIFLE, false);
 
         if(rifle.activeInHierarchy)
@@ -195,10 +195,10 @@ public class PlayerAnimation : MonoBehaviour
 
     private void ShootRifle(object receiver, EventArgs e)
     {
-        if (aimRifle && totalAmmunition > 0)
+        if (isRifleAiming && totalAmmunition > 0)
         {
             gunSmoke.Play();
-            rifleShot = true;
+            isRifleShot = true;
             playerAnim.SetBool(SHOOT, true);
             shakeCamera.SetActive(true);
         }
@@ -208,7 +208,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         playerAnim.SetBool(SHOOT, false);
         Invoke("DelayAimCamera", delayActiveCamera);
-        rifleShot = false;
+        isRifleShot = false;
     }
 
     private void BlockAttack(object receiver, EventArgs e)
@@ -216,7 +216,7 @@ public class PlayerAnimation : MonoBehaviour
 
         isRifleModeActivated = false;
 
-        shieldActive = true;
+        isShieldActive = true;
 
         sword.SetActive(true);
         sheatedSword.SetActive(false);
@@ -242,7 +242,7 @@ public class PlayerAnimation : MonoBehaviour
     private void CancelBlock(object receiver, EventArgs e)
     {
         blockSpeed = 0;
-        shieldActive=false;
+        isShieldActive=false;
         playerAnim.CrossFade(swordMovementAnimation, animationTransition);
         sword.SetActive(true);
     }
@@ -266,7 +266,7 @@ public class PlayerAnimation : MonoBehaviour
             sword.SetActive(false);
             sheatedSword.SetActive(true);
             startTimer = true;
-            rifleAttack = true;
+            isRifleAttackActive = true;
             playerAnim.SetBool(UNARMED_MOVEMENT, false);
             playerAnim.SetBool(ATTACK_SWORD_MOVEMENT, false);
             playerAnim.SetBool(ATTACK_RIFLE_MOVEMENT, true);
@@ -286,10 +286,10 @@ public class PlayerAnimation : MonoBehaviour
 
     private void AimRifle(object receiver, EventArgs e)
     {
-        if (rifleAttack)
+        if (isRifleAttackActive)
         {
             startTimer = false;
-            aimRifle = true;
+            isRifleAiming = true;
             playerAnim.SetBool(AIM_RIFLE, true);
         }
 
@@ -312,7 +312,7 @@ public class PlayerAnimation : MonoBehaviour
             }
 
             startTimer = true;
-            rifleAttack = false;
+            isRifleAttackActive = false;
             playerAnim.SetBool(UNARMED_MOVEMENT, false);
             playerAnim.SetBool(ATTACK_RIFLE_MOVEMENT, false);
             playerAnim.SetBool(ATTACK_SWORD_MOVEMENT, true);
@@ -355,27 +355,27 @@ public class PlayerAnimation : MonoBehaviour
 
     public bool IsPlayerAiming()
     {
-        return aimRifle;
+        return isRifleAiming;
     }
 
     public bool IsRifleShot()
     {
-        return rifleShot;
+        return isRifleShot;
     }
 
     public bool ShieldActive()
     {
-        return shieldActive;
+        return isShieldActive;
     }
 
     public bool LightAttack()
     {
-        return lightAttack;
+        return isLightAttackActive;
     }
 
     public bool LightComboAttack()
     {
-        return lightComboAttack;
+        return isLightComboAttackActive;
     }
 
     public bool IsRifleModeActivated()
@@ -388,11 +388,11 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (staminaBar.GetComponent<Slider>().value < 10f)
         {
-            staminaDepleted = true;
+            isStaminaDepleted = true;
         }
         else
         {
-            staminaDepleted = false;
+            isStaminaDepleted = false;
         }
     }
 
@@ -426,14 +426,14 @@ public class PlayerAnimation : MonoBehaviour
 
 
         // idle animation after a certain time has passed
-        if (rifleAttack == true && timer > idleTime && playerMovement == Vector2.zero)
+        if (isRifleAttackActive == true && timer > idleTime && playerMovement == Vector2.zero)
         {
             playerAnim.SetTrigger(TUCK_RIFLE);
             
             rifle.SetActive(false);
             shoulderRifle.SetActive(true);
 
-            rifleAttack = false;
+            isRifleAttackActive = false;
             startTimer = false;
             timer = 0;
             playerAnim.SetBool(UNARMED_MOVEMENT, true);
@@ -457,12 +457,12 @@ public class PlayerAnimation : MonoBehaviour
    
     private void ManageRunAnimation()
     {
-        if (isPlayerRunning == true && staminaDepleted == false)
+        if (isPlayerRunning == true && isStaminaDepleted == false)
         {
             playerAnim.SetBool(RUNNING, true);
         }
 
-        else if (isPlayerRunning == true && staminaDepleted == true)
+        else if (isPlayerRunning == true && isStaminaDepleted == true)
         {
             playerAnim.SetBool(RUNNING, false);
         }
