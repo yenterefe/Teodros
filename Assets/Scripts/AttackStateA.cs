@@ -24,7 +24,7 @@ public class AttackStateA : StateMachineBehaviour
 
     float attackDistance = 2f; 
 
-    private bool enemyIsAttacking=false;
+    private bool isEnemyAttacking=false;
 
     private float timer =0f;
  
@@ -57,7 +57,7 @@ public class AttackStateA : StateMachineBehaviour
 
         timer += Time.deltaTime;
 
-        enemyIsAttacking = true;
+        isEnemyAttacking = true;
 
         if (timer > activateSuperAttack)
         {
@@ -81,11 +81,11 @@ public class AttackStateA : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool(ATTACK, false);
-        enemyIsAttacking = false;
+        isEnemyAttacking = false;
     }
 
     public bool EnemyAttacking()
     {
-        return enemyIsAttacking;
+        return isEnemyAttacking;
     }
 }

@@ -17,8 +17,8 @@ public class PatrolState : StateMachineBehaviour
 
     private float distance;
 
-    private bool playerSeen = false;
-    private bool playerIsAttacking;
+    private bool isPlayerSeen = false;
+    private bool isPlayerAttacking;
 
     private List<Transform> checkpoints = new List<Transform>();
 
@@ -66,7 +66,7 @@ public class PatrolState : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        playerIsAttacking = enemyScript.PlayerAttacking();
+        isPlayerAttacking = enemyScript.PlayerAttacking();
 
         Ray ray = new Ray(enemy.transform.position, enemy.transform.forward);
 
@@ -74,7 +74,7 @@ public class PatrolState : StateMachineBehaviour
         {
             if (hit.collider.name=="Player")
             {
-                playerSeen = true;
+                isPlayerSeen = true;
 
                 Debug.Log("Player seen");
             }
@@ -82,11 +82,11 @@ public class PatrolState : StateMachineBehaviour
             // will delete in the final game
             else
             {
-                playerSeen = false;
+                isPlayerSeen = false;
             }
         }
 
-        if (playerSeen == true)
+        if (isPlayerSeen)
         {
             distance = Vector3.Distance(animator.transform.position, player.transform.position);
 
@@ -99,7 +99,7 @@ public class PatrolState : StateMachineBehaviour
 
                 animator.SetBool(_ATTACK, true);
 
-                if(playerIsAttacking == true)
+                if(isPlayerAttacking == true)
                 {
                     animator.SetBool(_BLOCK, true);
 

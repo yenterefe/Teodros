@@ -19,9 +19,9 @@ public class ChaseState : StateMachineBehaviour
 
     private bool playerIsAttacking;
 
-    private const string _MOVE = "Moving";
-    private const string _ATTACK = "Attack";
-    private const string _BLOCK = "Block";
+    private const string MOVE = "Moving";
+    private const string ATTACK = "Attack";
+    private const string BLOCK = "Block";
  
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -51,13 +51,13 @@ public class ChaseState : StateMachineBehaviour
             {
                 agent.SetDestination(agent.transform.position);
 
-                animator.SetBool(_MOVE, false);
+                animator.SetBool(MOVE, false);
 
-                animator.SetBool(_ATTACK, true);
+                animator.SetBool(ATTACK, true);
 
                 if(playerIsAttacking == true)
                 {
-                    animator.SetBool(_BLOCK, true);
+                    animator.SetBool(BLOCK, true);
 
                 }
             }

@@ -27,8 +27,8 @@ public class EnemySword : MonoBehaviour
     private bool startBlockTimer = false;
     private bool startShieldTimer = false;
     private bool isEnemyAttacking;
-    private bool shieldActive;
-    private bool specialAttack;
+    private bool isShieldActive;
+    private bool isSpecialAttackActive;
 
 
     private PlayerAnimation playerAnimation;
@@ -50,8 +50,8 @@ public class EnemySword : MonoBehaviour
 
     private void Update()
     {
-        shieldActive = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
-        specialAttack = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
+        isShieldActive = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
+        isSpecialAttackActive = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
 
 
         isEnemyAttacking = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
@@ -63,7 +63,7 @@ public class EnemySword : MonoBehaviour
 
     private void ChangeSwordMaterial()
     {
-        if (specialAttack == true)
+        if (isSpecialAttackActive)
         {
             originalSword.SetActive(false);
             warningSword.SetActive(true);
@@ -78,11 +78,11 @@ public class EnemySword : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        bool shieldActive = playerAnimation.ShieldActive();
+        bool isShieldActive = playerAnimation.ShieldActive();
 
         //bool specialAttack = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
 
-        if (other.gameObject.CompareTag("Player") && shieldActive == false && isEnemyAttacking == true)
+        if (other.gameObject.CompareTag("Player") && !isShieldActive && isEnemyAttacking)
         {
             playerHealthBar.GetComponent<Slider>().value -= 20;
 
@@ -90,13 +90,13 @@ public class EnemySword : MonoBehaviour
             // blood.Play();
 
             // player loses half of their life against the special attack 
-            if (specialAttack == true)
+            if (isSpecialAttackActive == true)
             {
                 playerHealthBar.GetComponent<Slider>().value -= 50;
             }
         }
 
-        if (other.gameObject.CompareTag("Shield") && shieldActive == true)
+        if (other.gameObject.CompareTag("Shield") && isShieldActive)
         {
             startShieldTimer = true;
 
@@ -107,13 +107,13 @@ public class EnemySword : MonoBehaviour
             //play block animation
 
             // enemy cannot block special attack and must dodge 
-            if (specialAttack == true)
+            if (isSpecialAttackActive)
             {
                 playerHealthBar.GetComponent<Slider>().value -= 50;
             }
         }
 
-        if (shieldActive == false)
+        if (!isShieldActive)
         {
             enemySwordTimer = 0;
             startShieldTimer = false;
@@ -135,7 +135,7 @@ public class EnemySword : MonoBehaviour
 
     private void ManageShieldTimer()
     {
-        if (startBlockTimer == true)
+        if (startBlockTimer)
         {
             blockTimer += Time.deltaTime;
         }
@@ -148,7 +148,7 @@ public class EnemySword : MonoBehaviour
 
     private void ManageEnemyAttackTimer()
     {
-        if (startShieldTimer == true)
+        if (startShieldTimer)
         {
             enemySwordTimer += Time.deltaTime;
         }
@@ -156,7 +156,7 @@ public class EnemySword : MonoBehaviour
 
     private void Parry()
     {
-        if (startShieldTimer == true && startBlockTimer == true && isEnemyAttacking == true)
+        if (startShieldTimer  && startBlockTimer && isEnemyAttacking)
         {
             if (Mathf.Abs(blockTimer - enemySwordTimer) < 0.9f)
             {

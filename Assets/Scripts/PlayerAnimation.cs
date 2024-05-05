@@ -76,8 +76,6 @@ public class PlayerAnimation : MonoBehaviour
     private const string UNARMED_MOVEMENT = "unArmedMovement";
     private const string TUCK_SWORD = "sheathSword";
     private const string TUCK_RIFLE = "tuckRifle";
-    private const string WITH_DRAWSWORD = "withdrawSword";
-    private const string WITHDRAW_RIFLE = "withdrawRifle";
     private const string ATTACK_RIFLE_MOVEMENT = "setRifleAttackMovement";
     private const string AIM_RIFLE = "setAiming";
     private const string SHOOT= "shoot";
@@ -422,24 +420,23 @@ public class PlayerAnimation : MonoBehaviour
         playerAnim.SetFloat(moveXID, player.SmoothDumpAnimation().x);
         playerAnim.SetFloat(moveZID, player.SmoothDumpAnimation().y);
 
+
+        // idle animation after a certain time has passed
         if (rifleAttack == true && timer > idleTime && playerMovement == Vector2.zero)
         {
             playerAnim.SetTrigger(TUCK_RIFLE);
+            
             rifle.SetActive(false);
             shoulderRifle.SetActive(true);
 
-            playerisIdle = true;
-
-            if (playerisIdle == true)
-            {
-                rifleAttack = false;
-                startTimer = false;
-                timer = 0;
-                playerAnim.SetBool(UNARMED_MOVEMENT, true);
-                playerAnim.SetBool(ATTACK_RIFLE_MOVEMENT, false);
-            }
+            rifleAttack = false;
+            startTimer = false;
+            timer = 0;
+            playerAnim.SetBool(UNARMED_MOVEMENT, true);
+            playerAnim.SetBool(ATTACK_RIFLE_MOVEMENT, false);
         }
 
+        // idle animation after a certain time has passed
         if (timer > idleTime && playerMovement == Vector2.zero)
         {
             playerAnim.SetTrigger(TUCK_SWORD);
@@ -447,15 +444,10 @@ public class PlayerAnimation : MonoBehaviour
             sword.SetActive(false);
             sheatedSword.SetActive(true);
 
-            playerisIdle = true;
-
-            if (playerisIdle == true)
-            {
-                startTimer = false;
-                timer = 0;
-                playerAnim.SetBool(UNARMED_MOVEMENT, true);
-                playerAnim.SetBool(ATTACK_SWORD_MOVEMENT, false);
-            }
+            startTimer = false;
+            timer = 0;
+            playerAnim.SetBool(UNARMED_MOVEMENT, true);
+            playerAnim.SetBool(ATTACK_SWORD_MOVEMENT, false);
         }
     }
    

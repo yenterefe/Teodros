@@ -5,7 +5,7 @@ public class PlayerSword : MonoBehaviour
 {
     [SerializeField] private GameObject enemyHealthBar;
     [SerializeField] private Animator animator;
-    private bool shieldActive;
+    private bool isShieldActive;
    
 
     // Don't delete
@@ -16,10 +16,10 @@ public class PlayerSword : MonoBehaviour
     {
         if (animator.isActiveAndEnabled ==true)
         {
-            shieldActive = animator.GetBehaviour<BlockStateA>().Blocking();
+            isShieldActive = animator.GetBehaviour<BlockStateA>().Blocking();
         }
       
-        if (other.gameObject.CompareTag("Enemy") && shieldActive == false)
+        if (other.gameObject.CompareTag("Enemy") && !isShieldActive)
         {
             enemyHealthBar.GetComponent<Slider>().value -=20;
 
@@ -28,7 +28,7 @@ public class PlayerSword : MonoBehaviour
             // blood.Play();
         }
 
-        if (other.gameObject.CompareTag("Shield") && shieldActive ==true)
+        if (other.gameObject.CompareTag("Shield") && isShieldActive)
         {
             // Don't delete
             // sparkle.Play();

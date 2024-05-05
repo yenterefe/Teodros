@@ -14,9 +14,9 @@ public class IdleState : StateMachineBehaviour
 
     private NavMeshAgent agent;
 
-    private bool playerSeen=false;
+    private bool isPlayerSeen=false;
 
-    private const string _MOVE = "Moving";
+    private const string MOVE = "Moving";
     
     
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -38,19 +38,19 @@ public class IdleState : StateMachineBehaviour
         {
             if (hit.collider.name =="Player")
             {
-                playerSeen = true;
+                isPlayerSeen = true;
             }
 
             else
             {
-                playerSeen = false;
+                isPlayerSeen = false;
 
             }
         }
 
-        if (playerSeen == true)
+        if (isPlayerSeen == true)
         {
-            animator.SetBool(_MOVE, true);
+            animator.SetBool(MOVE, true);
         }
 
         else
@@ -58,7 +58,7 @@ public class IdleState : StateMachineBehaviour
             timer += Time.deltaTime;
             if (timer > 5f)
             {
-                animator.SetBool(_MOVE, true);
+                animator.SetBool(MOVE, true);
             }
         }
 

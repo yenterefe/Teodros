@@ -27,13 +27,13 @@ public class Player : MonoBehaviour
     private float timer = 0;
     private float buttonPressed = 0;
 
-    private bool shotFired= false;
-    private bool enemyTakeDamage= false;
+    private bool isShotFired= false;
+    private bool isEnemyTakeDamage= false;
     private bool secondCombo;
-    private bool lightAttack;
-    private bool activateSecondCombo = false;
+    private bool isLightAttackActive;
+    private bool isSecondComboActivated = false;
     private bool isAiming;
-    private bool enemySighted = false;   
+    private bool isEnemySighted = false;   
 
     private Ray ray;
 
@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     
     private float stamina;
 
-    private bool staminaDepleted = false;
+    private bool isStaminaDepleted = false;
     
     private string gameObjectName;
 
@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
 
     private void PlayerRunning(object recevier, EventArgs e)
     {
-        if(staminaDepleted == false)
+        if(!isStaminaDepleted)
         {
             directionSpeed = 5;
         }
@@ -119,12 +119,12 @@ public class Player : MonoBehaviour
     private void LightAttackPerformed(object subscriber, EventArgs e)
     {
         buttonPressed++;
-        lightAttack = true;
+        isLightAttackActive = true;
     }
 
     private void ShotFiredPerformed(object receiver, EventArgs e)
     {
-        shotFired = true;
+        isShotFired = true;
     }
 
     private void ShotNotFired(object receiver, EventArgs e)
@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
 
     private void DelayShotCancel()
     {
-        shotFired = false;
+        isShotFired = false;
     }
 
     public Vector2 SmoothDumpAnimation()
@@ -145,7 +145,7 @@ public class Player : MonoBehaviour
     // See if you need this later
     public bool SecondCombo()
     {
-        return activateSecondCombo;
+        return isSecondComboActivated;
     }
 
     private void HandleMovement()
@@ -174,7 +174,7 @@ public class Player : MonoBehaviour
             moveDir = forwardRelative + rightRelative;
         }
 
-        if (isAiming == true)
+        if (isAiming)
         {
             // Player takes camera rotation
             transform.rotation = cam.transform.rotation;
@@ -191,7 +191,7 @@ public class Player : MonoBehaviour
                 Debug.DrawRay(transform.position, centerScreen, Color.red);
                 if (hit.collider.gameObject.name == "Enemy")
                 {
-                    enemySighted = true; 
+                    isEnemySighted = true; 
                     Debug.Log("Enemy onsite!");
                     noEnemyCrossHair.SetActive(false);
                     enemyCrossHair.SetActive(true);
@@ -203,14 +203,14 @@ public class Player : MonoBehaviour
                     noEnemyCrossHair.SetActive(true);
                 }
 
-                if (hit.collider.gameObject.name == "Enemy" && shotFired == true)
+                if (hit.collider.gameObject.name == "Enemy" && isShotFired)
                 {
-                    enemyTakeDamage = true;
+                    isEnemyTakeDamage = true;
                 }
 
                 else
                 {
-                    enemyTakeDamage = false;
+                    isEnemyTakeDamage = false;
                 }
             }
         }
@@ -218,7 +218,7 @@ public class Player : MonoBehaviour
         if (buttonPressed== 2)
         {
             float secondComboTimer = .65f;
-            activateSecondCombo=true;
+            isSecondComboActivated=true;
             buttonPressed=0;
             Invoke("DeactivateSecondCombo",secondComboTimer);
         }
@@ -238,12 +238,12 @@ public class Player : MonoBehaviour
 
     private void DeactivateSecondCombo()
     {
-        activateSecondCombo = false;
+        isSecondComboActivated = false;
     }
 
     public bool EnemyDamage()
     {
-        return enemyTakeDamage;
+        return isEnemyTakeDamage;
     }
 
     public bool SecondComboDamage()
@@ -258,7 +258,7 @@ public class Player : MonoBehaviour
 
     public bool IsEnemySighted()
     {
-        return enemySighted;
+        return isEnemySighted;
     }
 
     private void ManageStamina()    
@@ -267,12 +267,12 @@ public class Player : MonoBehaviour
 
         if(stamina <= 10f)
         {
-            staminaDepleted = true;
+            isStaminaDepleted = true;
         }
 
         else
         {
-            staminaDepleted = false;
+            isStaminaDepleted = false;
         }
     }
 }

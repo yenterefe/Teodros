@@ -45,7 +45,7 @@ public class BlockStateA : StateMachineBehaviour
 
         distance = Vector3.Distance(animator.transform.position, playerPos.position);
 
-        bool playerIsAttacking = enemyScript.PlayerAttacking();
+        bool isPlayerIsAttacking = enemyScript.PlayerAttacking();
 
         animator.SetBool(MOVE, false);
         animator.SetBool(ATTACK, false);
@@ -67,7 +67,7 @@ public class BlockStateA : StateMachineBehaviour
 
             }*/
             
-            if (playerIsAttacking == false)
+            if (!isPlayerIsAttacking)
             {
                 animator.SetBool(BLOCK, false);
             }
