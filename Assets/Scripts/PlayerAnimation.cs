@@ -157,6 +157,10 @@ public class PlayerAnimation : MonoBehaviour
 
             sword.SetActive(true);
 
+            playerAnim.SetBool(UNARMED_MOVEMENT, false);
+
+            playerAnim.SetBool(ATTACK_RIFLE_MOVEMENT, false);
+
             playerAnim.SetBool(ATTACK_SWORD_MOVEMENT, true);
 
             playerAnim.CrossFade(lightAttackAnimation1, animationTransition);
