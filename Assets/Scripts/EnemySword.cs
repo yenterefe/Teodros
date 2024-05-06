@@ -26,6 +26,7 @@ public class EnemySword : MonoBehaviour
     private PlayerAnimation playerAnimation;
 
     private const string PLAYER_HIT = "playerHit";
+    private const string BlOCK_ANIMATION = "blockImpact";
 
     private float blockTimer = 0;
     private float enemySwordTimer = 0;
@@ -35,7 +36,7 @@ public class EnemySword : MonoBehaviour
     private bool isEnemyAttacking;
     private bool isShieldActive;
     private bool isSpecialAttackActive;
-    private bool isPlayerHit = false;
+    private bool isPlayerBlocking = false;
 
 
     
@@ -67,7 +68,17 @@ public class EnemySword : MonoBehaviour
         ManageEnemyAttackTimer();
         Parry();
         ChangeSwordMaterial();
-        //Debug.Log("is player hit " + isPlayerHit);
+
+        if(isPlayerBlocking)
+        {
+            playerAnim.SetBool(BlOCK_ANIMATION, true);
+        }
+
+        else
+        {
+            playerAnim.SetBool(BlOCK_ANIMATION,false);
+        }
+
     }
 
     private void ChangeSwordMaterial()
@@ -113,15 +124,21 @@ public class EnemySword : MonoBehaviour
             // Don't delete
             // sparkle.Play();
 
-            // Don't delete
-            //play block animation
-
+            if(isEnemyAttacking)
+            {
+                isPlayerBlocking = true;
+            }
+            
             // enemy cannot block special attack and must dodge 
             if (isSpecialAttackActive)
             {
                 playerHealthBar.GetComponent<Slider>().value -= 50;
-                isPlayerHit=true;
             }
+        }
+
+        else
+        {
+            isPlayerBlocking = false;
         }
 
         //if (!isShieldActive)
@@ -175,10 +192,5 @@ public class EnemySword : MonoBehaviour
                 startShieldTimer = false;
             }
         }
-    }
-
-    public bool IsPlayerHit()
-    {
-        return isPlayerHit;
     }
 }
