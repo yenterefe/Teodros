@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
             staminaBar.GetComponent<Slider>().value -= depletion;
         }
 
-        if (recuperateStamina == true || isPlayerRunning ==false)
+        if (recuperateStamina|| !isPlayerRunning)
         {
             staminaBar.GetComponent<Slider>().value += recuperation;
         }

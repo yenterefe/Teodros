@@ -21,6 +21,12 @@ public class EnemySword : MonoBehaviour
 
     private GameInput gameInput;
 
+    private Animator playerAnim;
+
+    private PlayerAnimation playerAnimation;
+
+    private const string PLAYER_HIT = "playerHit";
+
     private float blockTimer = 0;
     private float enemySwordTimer = 0;
 
@@ -29,14 +35,16 @@ public class EnemySword : MonoBehaviour
     private bool isEnemyAttacking;
     private bool isShieldActive;
     private bool isSpecialAttackActive;
+    private bool isPlayerHit = false;
 
 
-    private PlayerAnimation playerAnimation;
+    
 
     private void Awake()
     {
         playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
         gameInput = inputManager.GetComponent<GameInput>();
+        playerAnim = playerPrefab.GetComponent<Animator>();
 
     }
 
@@ -59,6 +67,7 @@ public class EnemySword : MonoBehaviour
         ManageEnemyAttackTimer();
         Parry();
         ChangeSwordMaterial();
+        //Debug.Log("is player hit " + isPlayerHit);
     }
 
     private void ChangeSwordMaterial()
@@ -86,7 +95,8 @@ public class EnemySword : MonoBehaviour
         {
             playerHealthBar.GetComponent<Slider>().value -= 20;
 
-            // play hit animation 
+            playerAnim.SetTrigger(PLAYER_HIT);
+
             // blood.Play();
 
             // player loses half of their life against the special attack 
@@ -110,13 +120,14 @@ public class EnemySword : MonoBehaviour
             if (isSpecialAttackActive)
             {
                 playerHealthBar.GetComponent<Slider>().value -= 50;
+                isPlayerHit=true;
             }
         }
 
-        if (!isShieldActive)
+        //if (!isShieldActive)
         {
-            enemySwordTimer = 0;
-            startShieldTimer = false;
+            //enemySwordTimer = 0;
+            //startShieldTimer = false;
         }
     }
 
@@ -164,5 +175,10 @@ public class EnemySword : MonoBehaviour
                 startShieldTimer = false;
             }
         }
+    }
+
+    public bool IsPlayerHit()
+    {
+        return isPlayerHit;
     }
 }

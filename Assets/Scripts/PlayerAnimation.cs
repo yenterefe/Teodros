@@ -60,12 +60,13 @@ public class PlayerAnimation : MonoBehaviour
     private int lightAttackAnimation1;
     private int lightAttackAnimation2;
     private int block;
-    private int rifleAim;
-    private int fireRifle;
+    //private int rifleAim;
+    //private int fireRifle;
     private int swordMovementAnimation;
     private int sheatingSword;
     private int swordButtonPressed = 0;
     private int riffleButtonPressed = 0;
+    private int playerHitAnimation;
 
     private int totalAmmunition;
 
@@ -100,11 +101,10 @@ public class PlayerAnimation : MonoBehaviour
 
         sheatingSword = Animator.StringToHash("Sheathing Sword");
 
-        rifleAim = Animator.StringToHash("Aiming Rifle");
-        fireRifle = Animator.StringToHash("Firing Rifle (1)");
+        //rifleAim = Animator.StringToHash("Aiming Rifle");
+        //fireRifle = Animator.StringToHash("Firing Rifle (1)");
 
         block = Animator.StringToHash("Block");
-
     }
 
     private void Start()
@@ -343,7 +343,7 @@ public class PlayerAnimation : MonoBehaviour
 
         totalAmmunition = gameManager.GetAmmunition();
 
-        ManageRunAnimation();
+        ManageRunAnimation(); 
 
         Debug.Log(timer);
     }
