@@ -13,16 +13,20 @@ public class AttackStateA : StateMachineBehaviour
 
     private float distance;
 
+    private float counter = 0;
+
     private const string MOVE = "Moving";
+    private const string IDLE = "idle";
     private const string ATTACK = "Attack";
     private const string SPECIAL_ATTACK = "Special Attack";
-    private const string JUMP_BACK = "Run Back";
+    private const string ATTACK_TWO = "Attack_2";
+  
 
     private NavMeshAgent agent;
 
     private float activateSuperAttack;
 
-    float attackDistance = 2f; 
+    float attackDistance = 1.25f; 
 
     private bool isEnemyAttacking=false;
 
@@ -35,6 +39,8 @@ public class AttackStateA : StateMachineBehaviour
 
         animator.SetBool(SPECIAL_ATTACK, false);
 
+        animator.SetBool(IDLE, false);
+
         timer = 0;
 
         playerPos = GameObject.Find("Player").transform;
@@ -45,6 +51,7 @@ public class AttackStateA : StateMachineBehaviour
         
         activateSuperAttack = Random.Range(2, 7f);
 
+        counter++;
 
     }
 
@@ -59,22 +66,28 @@ public class AttackStateA : StateMachineBehaviour
 
         isEnemyAttacking = true;
 
-        if (timer > activateSuperAttack)
+        /*if (timer > activateSuperAttack)
         {
             animator.SetBool(SPECIAL_ATTACK, true);
-        }
+        }*/
 
-        if(distance> attackDistance)
+        if(distance> 2f)
         {
             animator.SetBool(MOVE, true);
         }
 
-        if (distance < attackDistance)
+        if(timer > 0.25f && counter %3 != 0)
         {
-            animator.SetBool(JUMP_BACK, true);
+            animator.SetBool(ATTACK_TWO,true);
         }
 
-        Debug.Log(distance);
+        if(counter%3 == 0)
+        {
+            animator.SetBool(SPECIAL_ATTACK, true);
+            counter = 0;
+        }
+
+       Debug.Log($"distance is equal to {distance}, counter is equal to {counter}, and counter divided by three is {counter/3}");
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

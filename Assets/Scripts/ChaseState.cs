@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class ChaseState : StateMachineBehaviour
-{ 
+{
+    [SerializeField] private float attackDistance = 1.5f;
     private NavMeshAgent agent;
 
     private GameObject enemy;
@@ -47,7 +48,7 @@ public class ChaseState : StateMachineBehaviour
 
         distance = Vector3.Distance(animator.transform.position, player.transform.position);
 
-        if (distance <= 2f)
+        if (distance <= attackDistance)
             {
                 agent.SetDestination(agent.transform.position);
 

@@ -2,20 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpecialAttackState : StateMachineBehaviour
+public class Attack2State : StateMachineBehaviour
 {
-    private const string IDLE = "Idle";
-    private const string SPECIAL_ATTACK = "Special Attack";
+
+    private const string MOVE = "Moving";
+
     private const string ATTACK = "Attack";
-    private float timer = 0;
-    private bool specialAttack = false;
+
+    private float attackTime = 1f;
+
+    private float timer;
+
+    private bool isEnemyAttacking = false;
+
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(SPECIAL_ATTACK, false);
-        animator.SetBool(IDLE, true);
-        specialAttack = true;
+        timer = 0;
+
+        isEnemyAttacking = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,21 +29,21 @@ public class SpecialAttackState : StateMachineBehaviour
     {
         timer += Time.deltaTime;
 
-        if(timer>0.25f)
+        if(timer > attackTime)
         {
             animator.SetBool(ATTACK, true);
         }
+        
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        specialAttack = false;
+        isEnemyAttacking = false;
     }
 
-  
-    public bool SpecialAttack()
+    public bool IsEnemyAttacking()
     {
-        return specialAttack;
+        return isEnemyAttacking;
     }
 }
