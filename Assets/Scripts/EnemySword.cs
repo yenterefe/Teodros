@@ -36,7 +36,9 @@ public class EnemySword : MonoBehaviour
     private bool isEnemyAttacking;
     private bool isShieldActive;
     private bool isSpecialAttackActive;
+    private bool isSecondAttackActive = false;
     private bool isPlayerBlocking = false;
+
 
 
     
@@ -59,11 +61,12 @@ public class EnemySword : MonoBehaviour
 
     private void Update()
     {
-        isShieldActive = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
-        isSpecialAttackActive = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
+        isShieldActive = animator.GetBehaviour<AttackStateA>().IsEnemyAttacking();
 
+        isSecondAttackActive = animator.GetBehaviour<Attack2State>().IsEnemyAttacking();
+        isSpecialAttackActive = animator.GetBehaviour<SpecialAttackState>().IsSpecialAttackActive();
+        isEnemyAttacking = animator.GetBehaviour<AttackStateA>().IsEnemyAttacking();
 
-        isEnemyAttacking = animator.GetBehaviour<AttackStateA>().EnemyAttacking();
         ManageShieldTimer();
         ManageEnemyAttackTimer();
         Parry();
@@ -102,7 +105,7 @@ public class EnemySword : MonoBehaviour
 
         //bool specialAttack = animator.GetBehaviour<SpecialAttackState>().SpecialAttack();
 
-        if (other.gameObject.CompareTag("Player") && !isShieldActive && isEnemyAttacking)
+        if (other.gameObject.CompareTag("Player") && !isShieldActive && isEnemyAttacking || other.gameObject.CompareTag("Player") && !isShieldActive && isSecondAttackActive)
         {
             playerHealthBar.GetComponent<Slider>().value -= 20;
 
@@ -124,7 +127,7 @@ public class EnemySword : MonoBehaviour
             // Don't delete
             // sparkle.Play();
 
-            if(isEnemyAttacking)
+            if(isEnemyAttacking || isSecondAttackActive)
             {
                 isPlayerBlocking = true;
             }

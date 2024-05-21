@@ -36,7 +36,7 @@ public class SpecialAttackState : StateMachineBehaviour
     }
 
   
-    public bool SpecialAttack()
+    public bool IsSpecialAttackActive()
     {
         return specialAttack;
     }

@@ -513,54 +513,54 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -6750770129306566938}
-    m_Position: {x: 900, y: -430, z: 0}
+    m_Position: {x: 2020, y: -350, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7216774538649938281}
-    m_Position: {x: 840, y: -70, z: 0}
+    m_Position: {x: 1960, y: 640, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -209055050508136851}
-    m_Position: {x: 840, y: 70, z: 0}
+    m_Position: {x: 1950, y: 890, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2496647165410326774}
-    m_Position: {x: -230, y: -100, z: 0}
+    m_Position: {x: -510, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 458153350659734707}
-    m_Position: {x: 900, y: -200, z: 0}
+    m_Position: {x: 2000, y: 290, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6593375610746245106}
-    m_Position: {x: -570, y: -940, z: 0}
+    m_Position: {x: -550, y: -1390, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 305391080144411722}
     m_Position: {x: -140, y: -1770, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3931104026955190028}
-    m_Position: {x: -580, y: -1070, z: 0}
+    m_Position: {x: -520, y: -1600, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1228028826311028091}
-    m_Position: {x: 720, y: -960, z: 0}
+    m_Position: {x: 2060, y: -1380, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3330864511534448793}
-    m_Position: {x: -590, y: -1170, z: 0}
+    m_Position: {x: -520, y: -1810, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 317978313021625324}
-    m_Position: {x: 870, y: 160, z: 0}
+    m_Position: {x: 1980, y: 1050, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2070618170597522146}
-    m_Position: {x: 300, y: -520, z: 0}
+    m_Position: {x: 740, y: -630, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5340412864832697856}
-    m_Position: {x: -200, y: -410, z: 0}
+    m_Position: {x: -290, y: -390, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -574589664157091380}
-    m_Position: {x: 870, y: 300, z: 0}
+    m_Position: {x: 1990, y: 1410, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -820, y: -1670, z: 0}
-  m_EntryPosition: {x: 860, y: -640, z: 0}
-  m_ExitPosition: {x: -530, y: -1670, z: 0}
+  m_AnyStatePosition: {x: -920, y: -1960, z: 0}
+  m_EntryPosition: {x: 2950, y: -300, z: 0}
+  m_ExitPosition: {x: -540, y: -1920, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -6750770129306566938}
 --- !u!1101 &-2259306654644416504
@@ -805,103 +805,103 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: MoveZ
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: setSwordAttackMovement
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: unArmedMovement
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: sheathSword
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: withdrawSword
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: withdrawRifle
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: setRifleAttackMovement
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: tuckRifle
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: setAiming
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: shoot
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Shield
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: block
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Running
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: playerHit
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Block
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: blockImpact
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer

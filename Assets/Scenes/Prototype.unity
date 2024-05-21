@@ -9853,8 +9853,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6386779, y: 1.5669825, z: 0.046353776}
-  m_Center: {x: 0.3040949, y: 0.73012716, z: -0.0035547162}
+  m_Size: {x: 0.6386779, y: 2.05254, z: 0.046353776}
+  m_Center: {x: 0.3040945, y: 0.9728958, z: -0.0035628087}
 --- !u!1 &1089641290
 GameObject:
   m_ObjectHideFlags: 0
@@ -13224,6 +13224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyHealthBar: {fileID: 123637851}
   animator: {fileID: 246486807}
+  inputManager: {fileID: 110275407}
 --- !u!1001 &1994259208
 PrefabInstance:
   m_ObjectHideFlags: 0

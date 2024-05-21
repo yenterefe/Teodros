@@ -97,7 +97,7 @@ public class AttackStateA : StateMachineBehaviour
         isEnemyAttacking = false;
     }
 
-    public bool EnemyAttacking()
+    public bool IsEnemyAttacking()
     {
         return isEnemyAttacking;
     }
