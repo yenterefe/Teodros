@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject inputManager;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject playerObject;
+    [SerializeField] private GameObject enemyTriggerBox;
+    [SerializeField] private GameObject enemy;
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
 
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     private GameInput gameInput;
     private Player player;
+    private EnemySpawner enemySpawner;
 
     private PlayerAnimation playerAnimation;
 
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
     private bool isPlayerAiming;
     private bool isPlayerRunning = false;
     private bool isRifleOn;
+    private bool isEnemyTriggerEntered;
 
     private int totalAmmunition = 5;
     private int firedAmmunition = 1;
@@ -39,6 +43,8 @@ public class GameManager : MonoBehaviour
         gameInput= inputManager.GetComponent<GameInput>();  
         playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
         player = playerObject.GetComponent<Player>();
+        enemySpawner = enemyTriggerBox.GetComponent<EnemySpawner>();
+
     }
 
     // Start is called before the first frame update
@@ -54,6 +60,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //to determine if enemy spawner is triggered
+        isEnemyTriggerEntered = enemySpawner.IsEnemyTriggerEntered();
+
+        SpawnEnemy();
+
         ManageStaminaBar();
         ManagePlayerHealthBar();
 
@@ -137,5 +148,19 @@ public class GameManager : MonoBehaviour
     public int GetAmmunition()
     {
         return totalAmmunition;
+    }
+
+    
+    private void SpawnEnemy()
+    {
+        if(isEnemyTriggerEntered && enemyTriggerBox != null)
+        {
+            if(!enemy.activeInHierarchy)
+            {
+                enemy.SetActive(true);
+                Vector3 offset = new Vector3(0, 0, 10);
+                enemy.transform.position = enemyTriggerBox.transform.position;
+            }
+        }   
     }
 }

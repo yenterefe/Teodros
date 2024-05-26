@@ -15,21 +15,42 @@ public class Attack2State : StateMachineBehaviour
 
     private bool isEnemyAttacking = false;
 
+    private bool isEnemyHit = false;
+
+    private PlayerSword playerSword;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         timer = 0;
-
-        isEnemyAttacking = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        GameObject sword = GameObject.Find("Sword");
+
+        if (sword == null)
+        {
+            Debug.Log("Sword is NOT active");
+            isEnemyHit = false;
+        }
+
+        else
+        {
+            playerSword = sword.GetComponent<PlayerSword>();
+
+            bool isEnemyHit = playerSword.IsEnemyHit();
+
+            if(isEnemyHit)
+            {
+                animator.SetTrigger("Hit");
+            }
+        }
+
         timer += Time.deltaTime;
 
-        if(timer > attackTime)
+        if(timer > attackTime && !isEnemyHit)
         {
             animator.SetBool(ATTACK, true);
         }

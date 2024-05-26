@@ -331,7 +331,7 @@ public class PlayerAnimation : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         // Checks for player's stamina
         Stamina();

@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class SpecialAttackState : StateMachineBehaviour
 {
+    private PlayerSword playerSword; 
+
+    private float timer = 0;
+    private bool specialAttack = false;
+
     private const string IDLE = "Idle";
     private const string SPECIAL_ATTACK = "Special Attack";
     private const string ATTACK = "Attack";
-    private float timer = 0;
-    private bool specialAttack = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -21,6 +24,25 @@ public class SpecialAttackState : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        GameObject sword = GameObject.Find("Sword");
+
+        if (sword == null)
+        {
+            Debug.Log("Sword is NOT active");
+        }
+
+        else
+        {
+            //Debug.Log("Sword is active");
+            playerSword = sword.GetComponent<PlayerSword>();
+
+            bool isEnemyHit = playerSword.IsEnemyHit();
+
+            if (isEnemyHit)
+            {
+                animator.SetTrigger("Hit");
+            }
+        }
         timer += Time.deltaTime;
 
         if(timer>0.25f)

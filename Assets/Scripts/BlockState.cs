@@ -13,6 +13,8 @@ public class BlockState : StateMachineBehaviour
     private Transform playerPos;
     private Enemy enemyScript;
 
+    private PlayerSword playerSword;
+
     private const string MOVE = "Moving";
     private const string ATTACK = "Attack";
     private const string BLOCK = "Block";
@@ -27,12 +29,30 @@ public class BlockState : StateMachineBehaviour
         playerPos = GameObject.Find("Player").transform;
 
         enemyScript = enemy.GetComponent<Enemy>();
-
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        GameObject sword = GameObject.Find("Sword");
+
+        if (sword == null)
+        {
+            Debug.Log("Sword is NOT active");
+        }
+
+        else
+        {
+            playerSword = sword.GetComponent<PlayerSword>();
+
+            bool isEnemyHit = playerSword.IsEnemyHit();
+
+            if(isEnemyHit)
+            {
+                animator.SetTrigger("Hit");
+            } 
+        }
+
         distance = Vector3.Distance(animator.transform.position, playerPos.position);
 
         animator.transform.LookAt(playerPos);
@@ -44,9 +64,8 @@ public class BlockState : StateMachineBehaviour
 
         if (!isPlayerIsAttacking)
         {
-            animator.SetBool(BLOCK, false);
+            animator.SetBool(MOVE, true);
         }
-
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

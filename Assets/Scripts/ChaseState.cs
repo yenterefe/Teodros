@@ -16,6 +16,8 @@ public class ChaseState : StateMachineBehaviour
 
     private Enemy enemyScript;
 
+    private PlayerSword playerSword;
+
     private float distance;
 
     private bool playerIsAttacking;
@@ -23,10 +25,13 @@ public class ChaseState : StateMachineBehaviour
     private const string MOVE = "Moving";
     private const string ATTACK = "Attack";
     private const string BLOCK = "Block";
+    private const string HIT = "Hit";
  
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        //animator.ResetTrigger(HIT);
+
         enemy = GameObject.Find("Enemy A");
 
         player = GameObject.Find("Player");
@@ -44,6 +49,25 @@ public class ChaseState : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        GameObject sword = GameObject.Find("Sword");
+
+        if (sword == null)
+        {
+            Debug.Log("Sword is NOT active");
+        }
+
+        else
+        {
+            playerSword = sword.GetComponent<PlayerSword>();
+
+            bool isEnemyHit = playerSword.IsEnemyHit();
+
+            if (isEnemyHit)
+            {
+                animator.SetTrigger("Hit");
+            }
+        }
+
         playerIsAttacking = enemyScript.PlayerAttacking();
 
         distance = Vector3.Distance(animator.transform.position, player.transform.position);

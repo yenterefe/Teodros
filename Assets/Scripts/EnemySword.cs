@@ -10,6 +10,7 @@ public class EnemySword : MonoBehaviour
     [SerializeField] private GameObject playerHealthBar;
     [SerializeField] private GameObject inputManager;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject sword;
 
 
     [SerializeField] private GameObject originalSword;
@@ -27,6 +28,7 @@ public class EnemySword : MonoBehaviour
 
     private const string PLAYER_HIT = "playerHit";
     private const string BlOCK_ANIMATION = "blockImpact";
+    private const string SWORD_MOVEMENT = "setSwordAttackMovement";
 
     private float blockTimer = 0;
     private float enemySwordTimer = 0;
@@ -38,6 +40,7 @@ public class EnemySword : MonoBehaviour
     private bool isSpecialAttackActive;
     private bool isSecondAttackActive = false;
     private bool isPlayerBlocking = false;
+    private bool isPlayerHit = false;
 
 
 
@@ -59,7 +62,7 @@ public class EnemySword : MonoBehaviour
         originalSword.SetActive(true);
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         isShieldActive = animator.GetBehaviour<AttackStateA>().IsEnemyAttacking();
 
@@ -111,6 +114,8 @@ public class EnemySword : MonoBehaviour
 
             playerAnim.SetTrigger(PLAYER_HIT);
 
+            isPlayerHit = true;
+
             // blood.Play();
 
             // player loses half of their life against the special attack 
@@ -130,6 +135,7 @@ public class EnemySword : MonoBehaviour
             if(isEnemyAttacking || isSecondAttackActive)
             {
                 isPlayerBlocking = true;
+                isPlayerHit = true;
             }
             
             // enemy cannot block special attack and must dodge 
@@ -149,6 +155,16 @@ public class EnemySword : MonoBehaviour
             //enemySwordTimer = 0;
             //startShieldTimer = false;
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(isPlayerHit)
+        {
+            playerAnim.SetBool(SWORD_MOVEMENT, true);
+            sword.SetActive(true);
+        }
+        
     }
 
 

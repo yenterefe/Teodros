@@ -12,9 +12,12 @@ public class PlayerSword : MonoBehaviour
     private GameInput gameInput;
     private bool isShieldActive;
     private bool isPlayerAttacking = false;
+    private bool isEnemyHit = false;
 
     private Camera cam;
 
+    private const string HIT = "Hit";
+    private const string IDLE = "Idle";
 
     // Don't delete
     //[SerializeField] private ParticleSystem sparkle;
@@ -34,9 +37,10 @@ public class PlayerSword : MonoBehaviour
         gameInput.OnLightAttackCanceled += ManageCancelAttack;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         enemyHealthBar.transform.rotation = cam.transform.rotation;
+      
     }
 
     private void ManageAttack(object receiver, EventArgs  e)
@@ -58,20 +62,32 @@ public class PlayerSword : MonoBehaviour
       
         if (other.gameObject.CompareTag("Enemy") && !isShieldActive && isPlayerAttacking)
         {
+            isEnemyHit = true;
             enemyHealthBar.GetComponent<Slider>().value -=20;
-
-            // play hit animation 
 
             // blood.Play();
         }
 
         if (other.gameObject.CompareTag("Shield") && isShieldActive)
         {
+            isEnemyHit = false;
+
             // Don't delete
             // sparkle.Play();
 
             // Don't delete
             //play block animation
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        animator.SetBool( IDLE, true);
+        isEnemyHit=false;
+    }
+
+    public bool IsEnemyHit()
+    {
+        return isEnemyHit;  
     }
 }

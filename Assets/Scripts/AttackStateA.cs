@@ -11,6 +11,8 @@ public class AttackStateA : StateMachineBehaviour
 
     private GameObject enemy;
 
+    private PlayerSword playerSword;
+
     private float distance;
 
     private float counter = 0;
@@ -30,13 +32,13 @@ public class AttackStateA : StateMachineBehaviour
 
     private bool isEnemyAttacking=false;
 
+    private bool isEnemyHit;
+
     private float timer =0f;
- 
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
         animator.SetBool(SPECIAL_ATTACK, false);
 
         animator.SetBool(IDLE, false);
@@ -44,6 +46,7 @@ public class AttackStateA : StateMachineBehaviour
         timer = 0;
 
         playerPos = GameObject.Find("Player").transform;
+
 
         enemy = GameObject.Find("Enemy A");
 
@@ -58,6 +61,27 @@ public class AttackStateA : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+         GameObject sword = GameObject.Find("Sword");
+
+        if (sword == null)
+        {
+            Debug.Log("Sword is NOT active");
+        }
+
+        else
+        {
+           //Debug.Log("Sword is active");
+           playerSword =sword.GetComponent<PlayerSword>();
+
+            bool isEnemyHit = playerSword.IsEnemyHit();
+
+            if(isEnemyHit)
+            {
+                animator.SetTrigger("Hit");
+            } 
+        }
+
+        
         distance = Vector3.Distance(animator.transform.position, playerPos.position);   
 
         animator.transform.LookAt(playerPos);
@@ -87,7 +111,7 @@ public class AttackStateA : StateMachineBehaviour
             counter = 0;
         }
 
-       Debug.Log($"distance is equal to {distance}, counter is equal to {counter}, and counter divided by three is {counter/3}");
+       //Debug.Log($"distance is equal to {distance}, counter is equal to {counter}, and counter divided by three is {counter/3}");
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

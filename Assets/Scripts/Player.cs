@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
         //Debug.Log("Name of object aimed at " + gameObjectName);
 
         ManageStamina();
+  
     }
 
     private void FixedUpdate()
