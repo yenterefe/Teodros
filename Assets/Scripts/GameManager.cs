@@ -55,6 +55,10 @@ public class GameManager : MonoBehaviour
         gameInput.OnRifleFirePerformed += AmmoManager;
         gameInput.OnPlayerRunningPeformed += PlayerRunning;
         gameInput.OnPlayerRunningCanceled += PlayerWalking;
+
+        // sets framerate
+        Application.targetFrameRate = 100;
+
     }
 
     // Update is called once per frame
