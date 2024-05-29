@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 
 public class BlockStateA : StateMachineBehaviour
 {
@@ -13,6 +13,8 @@ public class BlockStateA : StateMachineBehaviour
 
     private Transform playerPos;
     private Enemy enemyScript;
+
+    private NavMeshAgent agent;
 
     private bool isBlocking = false;
 
@@ -33,6 +35,10 @@ public class BlockStateA : StateMachineBehaviour
 
         enemyScript = enemy.GetComponent<Enemy>();
         
+        agent = enemy.GetComponent<NavMeshAgent>();
+
+        agent.SetDestination(agent.transform.position);
+
         timer = 0;
 
     }
@@ -47,7 +53,7 @@ public class BlockStateA : StateMachineBehaviour
 
         bool isPlayerIsAttacking = enemyScript.PlayerAttacking();
 
-        animator.SetBool(MOVE, false);
+        //animator.SetBool(MOVE, false);
         animator.SetBool(ATTACK, false);
 
         if (distance <2)

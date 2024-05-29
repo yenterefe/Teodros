@@ -159,6 +159,7 @@ public class EnemySword : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        //refactor this code to player animation so that it won't glitch after player gets hit.
         if(isPlayerHit)
         {
             playerAnim.SetBool(SWORD_MOVEMENT, true);

@@ -9,6 +9,8 @@ public class PlayerSword : MonoBehaviour
     [SerializeField] private GameObject inputManager;
     [SerializeField] private GameObject enemy;
 
+    [SerializeField] private float damageAmount = 20; 
+
     private GameInput gameInput;
     private bool isShieldActive;
     private bool isPlayerAttacking = false;
@@ -63,7 +65,7 @@ public class PlayerSword : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy") && !isShieldActive && isPlayerAttacking)
         {
             isEnemyHit = true;
-            enemyHealthBar.GetComponent<Slider>().value -=20;
+            enemyHealthBar.GetComponent<Slider>().value -= damageAmount;
 
             // blood.Play();
         }
