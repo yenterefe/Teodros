@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerObject;
     [SerializeField] private GameObject enemyTriggerBox;
     [SerializeField] private GameObject enemy;
+    [SerializeField] private GameObject ammo;
+  
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
 
@@ -25,6 +27,8 @@ public class GameManager : MonoBehaviour
     private GameInput gameInput;
     private Player player;
     private EnemySpawner enemySpawner;
+    private Collector collector;
+    private Bullet bullet;
 
     private PlayerAnimation playerAnimation;
 
@@ -34,9 +38,11 @@ public class GameManager : MonoBehaviour
     private bool isPlayerRunning = false;
     private bool isRifleOn;
     private bool isEnemyTriggerEntered;
+    private bool isAmmoCollected = false;
 
     private int totalAmmunition = 5;
     private int firedAmmunition = 1;
+    private int leftBullet = 5;
 
     private void Awake()
     {
@@ -44,6 +50,8 @@ public class GameManager : MonoBehaviour
         playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
         player = playerObject.GetComponent<Player>();
         enemySpawner = enemyTriggerBox.GetComponent<EnemySpawner>();
+        collector= playerObject.GetComponent<Collector>();
+        bullet = ammo.GetComponent<Bullet>();   
 
     }
 
@@ -56,6 +64,10 @@ public class GameManager : MonoBehaviour
         gameInput.OnPlayerRunningPeformed += PlayerRunning;
         gameInput.OnPlayerRunningCanceled += PlayerWalking;
 
+        // Get Collector to from the OnTrigger for the ICollector interface for any collectable objects.
+        bullet.OnBulletCollected += BulletManager;
+
+
         // sets framerate
         Application.targetFrameRate = 100;
 
@@ -64,6 +76,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log($"total ammunition: {totalAmmunition} " + $"left ammo: {leftBullet}");
+
         //to determine if enemy spawner is triggered
         isEnemyTriggerEntered = enemySpawner.IsEnemyTriggerEntered();
 
@@ -82,6 +96,7 @@ public class GameManager : MonoBehaviour
         {
             ammoIndicator.text = "Ammo: " + 0;
         }
+
 
         bool isEnemySighted = player.IsEnemySighted();
         bool isPlayershooting = playerAnimation.IsRifleShot();
@@ -166,5 +181,21 @@ public class GameManager : MonoBehaviour
                 enemy.transform.position = enemyTriggerBox.transform.position;
             }
         }   
+    }
+
+    private void BulletManager(object receiver, EventArgs e)
+    {
+       if(totalAmmunition < 5 && leftBullet>0)
+        {
+            // The rifle can only take 5 ammos and if player has more than 5, there will be some ammo left for next time. But, if the ammo is completely used it will disappear 
+
+            leftBullet-= (5 - totalAmmunition);
+            totalAmmunition = 5;
+        }
+
+       if(leftBullet ==0)
+        {
+            ammo.SetActive(false);
+        }
     }
 }
