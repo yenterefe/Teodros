@@ -183,7 +183,7 @@ public class PlayerAnimation : MonoBehaviour
     private void CancelAim(object receiver, EventArgs e)
     {
         aimCamera.SetActive(false);
-        ammoIndicator.SetActive(false);
+        ammoIndicator.SetActive(true);
         isRifleAiming = false;
         playerAnim.SetBool(AIM_RIFLE, false);
 
@@ -260,7 +260,11 @@ public class PlayerAnimation : MonoBehaviour
                 sheatedSword.SetActive(true);
             }
 
-            ammoIndicator.SetActive(true);
+            if(!ammoIndicator.activeInHierarchy)
+            {
+                ammoIndicator.SetActive(true);
+            }
+
             shoulderRifle.SetActive(false);
             rifle.SetActive(true);
             sword.SetActive(false);
@@ -296,6 +300,7 @@ public class PlayerAnimation : MonoBehaviour
         if (rifle.activeInHierarchy)
         {
             aimCamera.SetActive(true);
+            ammoIndicator.SetActive(true);
         }
     }
 
