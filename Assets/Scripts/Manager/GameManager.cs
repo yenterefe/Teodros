@@ -228,6 +228,7 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0;
            playerPrefab.GetComponent<Animator>().enabled = false;
+            // Do the same for enemy if active or other NPCs
 
         }
 
@@ -235,6 +236,7 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1f;
             playerPrefab.GetComponent<Animator>().enabled = true;
+            // Do the same for enemy if active or other NPCs
         }
     }
 }
