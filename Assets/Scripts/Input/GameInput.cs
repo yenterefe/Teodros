@@ -29,6 +29,7 @@ public class GameInput : MonoBehaviour
     public EventHandler OnShieldCanceled;
     public EventHandler OnPlayerRunningPeformed;
     public EventHandler OnPlayerRunningCanceled;
+    public EventHandler OnPausePerformed;
 
     private void Awake()
     {
@@ -71,6 +72,27 @@ public class GameInput : MonoBehaviour
         inputActions.Player.Run.performed += Run_performed;
 
         inputActions.Player.Run.canceled += Run_canceled;
+
+        inputActions.Player.Pause.performed += Pause_performed;
+
+
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        
+        if(OnPausePerformed != null)
+        {
+            //inputActions.Player.Disable();
+            //inputActions.Camera.Disable();
+            OnPausePerformed(this, EventArgs.Empty);
+        }
+
+        else
+        {
+            //inputActions.Player.Enable();
+            //inputActions.Camera.Enable();
+        }
     }
 
     private void Run_canceled(InputAction.CallbackContext obj)

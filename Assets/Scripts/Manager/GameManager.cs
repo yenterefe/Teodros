@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject enemyTriggerBox;
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject ammo;
+    [SerializeField] private GameObject healthObject; 
   
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     private EnemySpawner enemySpawner;
     private Collector collector;
     private Bullet bullet;
+    private Health health;
 
     private PlayerAnimation playerAnimation;
 
@@ -44,6 +46,8 @@ public class GameManager : MonoBehaviour
     private int firedAmmunition = 1;
     private int leftBullet = 5;
 
+    private int pauseCounter = 0;
+
     private void Awake()
     {
         gameInput= inputManager.GetComponent<GameInput>();  
@@ -51,8 +55,8 @@ public class GameManager : MonoBehaviour
         player = playerObject.GetComponent<Player>();
         enemySpawner = enemyTriggerBox.GetComponent<EnemySpawner>();
         collector= playerObject.GetComponent<Collector>();
-        bullet = ammo.GetComponent<Bullet>();   
-
+        bullet = ammo.GetComponent<Bullet>();  
+        health = healthObject.GetComponent<Health>();
     }
 
     // Start is called before the first frame update
@@ -63,9 +67,12 @@ public class GameManager : MonoBehaviour
         gameInput.OnRifleFirePerformed += AmmoManager;
         gameInput.OnPlayerRunningPeformed += PlayerRunning;
         gameInput.OnPlayerRunningCanceled += PlayerWalking;
+        gameInput.OnPausePerformed += PauseApplication;
 
-        // Get Collector to from the OnTrigger for the ICollector interface for any collectable objects.
+        // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
         bullet.OnBulletCollected += BulletManager;
+        health.OnHealthCollected += HealthManager;
+
 
 
         // sets framerate
@@ -76,7 +83,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log($"total ammunition: {totalAmmunition} " + $"left ammo: {leftBullet}");
+        //Debug.Log($"total ammunition: {totalAmmunition} " + $"left ammo: {leftBullet}");
+
+        Debug.Log($"Time scale value is: {Time.timeScale}");
 
         //to determine if enemy spawner is triggered
         isEnemyTriggerEntered = enemySpawner.IsEnemyTriggerEntered();
@@ -107,17 +116,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void PlayerRunning(object receiver, EventArgs e)
+    private void PlayerRunning(object source, EventArgs e)
     {
         isPlayerRunning = true;
     }
 
-    private void PlayerWalking(object receiver, EventArgs e)
+    private void PlayerWalking(object source, EventArgs e)
     {
         isPlayerRunning = false;
     }
 
-    private void DepleteStamina(object receiver, EventArgs e)
+    private void DepleteStamina(object source, EventArgs e)
     {
         if(staminaBar.GetComponent<Slider>().value != 0 && !isPlayerAiming && !isRifleOn)
         {
@@ -126,7 +135,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void RecuperateStamina(object receiver, EventArgs e)
+    private void RecuperateStamina(object source, EventArgs e)
     {
         if(staminaBar.GetComponent<Slider>().value != 100)
         {
@@ -156,7 +165,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void AmmoManager(object receiver, EventArgs e)
+    private void AmmoManager(object source, EventArgs e)
     {
         if(isPlayerAiming)
         {
@@ -183,7 +192,7 @@ public class GameManager : MonoBehaviour
         }   
     }
 
-    private void BulletManager(object receiver, EventArgs e)
+    private void BulletManager(object source, EventArgs e)
     {
        if(totalAmmunition < 5 && leftBullet>0)
         {
@@ -196,6 +205,36 @@ public class GameManager : MonoBehaviour
        if(leftBullet ==0)
         {
             ammo.SetActive(false);
+        }
+
+    }
+
+    private void HealthManager(object source, EventArgs e)
+    {
+        if(playerHealthBar.GetComponent<Slider>().value <100)
+        {
+            playerHealthBar.GetComponent<Slider>().value = 100;
+            healthObject.SetActive(false);
+        }
+        
+    }
+
+    private void PauseApplication(object source, EventArgs e)
+    {
+
+        pauseCounter++;
+        
+        if(pauseCounter %2 !=0)
+        {
+            Time.timeScale = 0;
+           playerPrefab.GetComponent<Animator>().enabled = false;
+
+        }
+
+        else
+        {
+            Time.timeScale = 1f;
+            playerPrefab.GetComponent<Animator>().enabled = true;
         }
     }
 }
