@@ -10,6 +10,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         Bullet.OnBulletCollected += Add;
+        Health.OnHealthCollected += Add;
     }
 
     /*private void OnEnable()

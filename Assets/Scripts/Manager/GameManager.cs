@@ -72,7 +72,8 @@ public class GameManager : MonoBehaviour
         // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
         //bullet.OnBulletCollected += BulletManager;
         Bullet.OnBulletCollected += BulletManager;
-        health.OnHealthCollected += HealthManager;
+        //health.OnHealthCollected += HealthManager;
+        Health.OnHealthCollected += HealthManager;
 
 
 
@@ -210,12 +211,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void HealthManager(object source, EventArgs e)
+    private void HealthManager(object source, ItemData data)
     {
         if(playerHealthBar.GetComponent<Slider>().value <100)
         {
             playerHealthBar.GetComponent<Slider>().value = 100;
-            healthObject.SetActive(false);
         }
         
     }

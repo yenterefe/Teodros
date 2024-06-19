@@ -5,13 +5,15 @@ using System;
 
 public class Health : MonoBehaviour, ICollectable
 {
-    public EventHandler OnHealthCollected;
+    public static EventHandler<ItemData> OnHealthCollected;
+    [SerializeField] ItemData healthData;
 
     public void Collect()
     {
         if(OnHealthCollected != null)
         {
-            OnHealthCollected(this, EventArgs.Empty);
+            OnHealthCollected(this, healthData);
+            gameObject.SetActive(false);
         }
     }
 }
