@@ -350,7 +350,8 @@ public class PlayerAnimation : MonoBehaviour
 
         ManageRunAnimation(); 
 
-        Debug.Log(timer);
+        // Don't delete
+        //Debug.Log(timer);
     }
 
     private void DelayAimCamera()

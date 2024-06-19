@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+  
+
+    private void OnCollisionEnter(Collision collision)
     {
-        ICollectable collectable = other.GetComponent<ICollectable>();
+        ICollectable collectable = collision.gameObject.GetComponent<ICollectable>();   
 
         if(collectable != null)
         {

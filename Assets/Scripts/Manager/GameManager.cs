@@ -70,7 +70,8 @@ public class GameManager : MonoBehaviour
         gameInput.OnPausePerformed += PauseApplication;
 
         // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
-        bullet.OnBulletCollected += BulletManager;
+        //bullet.OnBulletCollected += BulletManager;
+        Bullet.OnBulletCollected += BulletManager;
         health.OnHealthCollected += HealthManager;
 
 
@@ -85,7 +86,7 @@ public class GameManager : MonoBehaviour
     {
         //Debug.Log($"total ammunition: {totalAmmunition} " + $"left ammo: {leftBullet}");
 
-        Debug.Log($"Time scale value is: {Time.timeScale}");
+        //Debug.Log($"Time scale value is: {Time.timeScale}");
 
         //to determine if enemy spawner is triggered
         isEnemyTriggerEntered = enemySpawner.IsEnemyTriggerEntered();
@@ -192,7 +193,7 @@ public class GameManager : MonoBehaviour
         }   
     }
 
-    private void BulletManager(object source, EventArgs e)
+    private void BulletManager(object source, ItemData data)
     {
        if(totalAmmunition < 5 && leftBullet>0)
         {

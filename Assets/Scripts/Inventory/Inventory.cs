@@ -4,15 +4,35 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    List<InventoryItem> inventory = new List<InventoryItem>();
+    Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
+
+    private void Start()
     {
-        
+        Bullet.OnBulletCollected += Add;
     }
 
-    // Update is called once per frame
-    void Update()
+    /*private void OnEnable()
     {
-        
+        Bullet.OnBulletCollected += Add;
+    }*/
+
+
+    private void Add(object source, ItemData itemData)
+    {
+        if (itemDictionary.TryGetValue(itemData, out InventoryItem item))
+        {
+            item.AddToStack();
+            Debug.Log($"you collected {itemData.itemName} and total stack is {item.stack}");
+        }
+
+
+        else
+        {
+            InventoryItem newItem = new InventoryItem(itemData);
+            inventory.Add(newItem);
+            itemDictionary.Add(itemData, newItem);
+            Debug.Log($"you collected {itemData.itemName} and total stack is {newItem.stack}");
+        }
     }
 }

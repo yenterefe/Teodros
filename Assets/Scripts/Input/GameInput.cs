@@ -80,18 +80,9 @@ public class GameInput : MonoBehaviour
 
     private void Pause_performed(InputAction.CallbackContext obj)
     {
-        
         if(OnPausePerformed != null)
         {
-            //inputActions.Player.Disable();
-            //inputActions.Camera.Disable();
             OnPausePerformed(this, EventArgs.Empty);
-        }
-
-        else
-        {
-            //inputActions.Player.Enable();
-            //inputActions.Camera.Enable();
         }
     }
 

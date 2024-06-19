@@ -5,13 +5,16 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour, ICollectable
 {
-    public EventHandler OnBulletCollected;
- 
+    public static EventHandler<ItemData> OnBulletCollected;
+
+    [SerializeField] private ItemData bullet;
+
     public void Collect()
     {
         if(OnBulletCollected != null)
         {
-            OnBulletCollected(this, EventArgs.Empty);
+            OnBulletCollected(this, bullet);
+            gameObject.SetActive(false);
         }
     }
 }
