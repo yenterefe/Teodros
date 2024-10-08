@@ -33,13 +33,15 @@ public class GameInput : MonoBehaviour
 
     private void Awake()
     {
-        //playerAnimation = player.GetComponent<PlayerAnimation>();
 
         inputActions = new PlayerInputActions();
-
         inputActions.Player.Enable();
-
         inputActions.Camera.Rotation.Enable();
+    }
+
+    private void OnEnable()
+    {
+        //playerAnimation = player.GetComponent<PlayerAnimation>();
 
         inputActions.Camera.Rotation.performed += Rotation_performed;
 
@@ -74,8 +76,43 @@ public class GameInput : MonoBehaviour
         inputActions.Player.Run.canceled += Run_canceled;
 
         inputActions.Player.Pause.performed += Pause_performed;
+    }
 
+    private void OnDisable()
+    {
+        inputActions.Camera.Rotation.performed -= Rotation_performed;
 
+        inputActions.Camera.Rotation.canceled -= Rotation_canceled;
+
+        inputActions.Player.Movement.performed -= Movement_performed;
+
+        inputActions.Player.Movement.canceled -= Movement_canceled;
+
+        inputActions.Player.LightAttack.performed -= LightAttack_performed;
+
+        inputActions.Player.LightAttack.canceled -= LightAttack_canceled;
+
+        inputActions.Player.SwitchToSword.performed -= SwitchToSword_performed;
+
+        inputActions.Player.SwitchtoRifle.performed -= SwitchtoRifle_performed;
+
+        inputActions.Player.RifleAim.performed -= RifleAim_performed;
+
+        inputActions.Player.RifleAim.canceled -= RifleAim_canceled;
+
+        inputActions.Player.FireRifle.performed -= FireRifle_performed;
+
+        inputActions.Player.FireRifle.canceled -= FireRifle_canceled;
+
+        inputActions.Player.Shield.performed -= Shield_performed;
+
+        inputActions.Player.Shield.canceled -= Shield_canceled;
+
+        inputActions.Player.Run.performed -= Run_performed;
+
+        inputActions.Player.Run.canceled -= Run_canceled;
+
+        inputActions.Player.Pause.performed -= Pause_performed;
     }
 
     private void Pause_performed(InputAction.CallbackContext obj)

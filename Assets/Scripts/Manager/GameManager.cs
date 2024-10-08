@@ -59,8 +59,7 @@ public class GameManager : MonoBehaviour
         health = healthObject.GetComponent<Health>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
         gameInput.OnLightAttackPerformed += DepleteStamina;
         gameInput.OnLightAttackCanceled += RecuperateStamina;
@@ -74,15 +73,28 @@ public class GameManager : MonoBehaviour
         Bullet.OnBulletCollected += BulletManager;
         //health.OnHealthCollected += HealthManager;
         Health.OnHealthCollected += HealthManager;
-
-
-
-        // sets framerate
-        Application.targetFrameRate = 100;
-
     }
 
-    // Update is called once per frame
+    private void OnDisable()
+    {
+        gameInput.OnLightAttackPerformed -= DepleteStamina;
+        gameInput.OnLightAttackCanceled -= RecuperateStamina;
+        gameInput.OnRifleFirePerformed -= AmmoManager;
+        gameInput.OnPlayerRunningPeformed -= PlayerRunning;
+        gameInput.OnPlayerRunningCanceled -= PlayerWalking;
+        gameInput.OnPausePerformed -= PauseApplication;
+
+        // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
+        Bullet.OnBulletCollected -= BulletManager;
+        Health.OnHealthCollected -= HealthManager;
+    }
+
+    private void Start()
+    {
+        // sets framerate
+        Application.targetFrameRate = 100;
+    }
+
     void Update()
     {
         //Debug.Log($"total ammunition: {totalAmmunition} " + $"left ammo: {leftBullet}");
@@ -107,7 +119,6 @@ public class GameManager : MonoBehaviour
         {
             ammoIndicator.text = "Ammo: " + 0;
         }
-
 
         bool isEnemySighted = player.IsEnemySighted();
         bool isPlayershooting = playerAnimation.IsRifleShot();
@@ -199,7 +210,6 @@ public class GameManager : MonoBehaviour
        if(totalAmmunition < 5 && leftBullet>0)
         {
             // The rifle can only take 5 ammos and if player has more than 5, there will be some ammo left for next time. But, if the ammo is completely used it will disappear 
-
             leftBullet-= (5 - totalAmmunition);
             totalAmmunition = 5;
         }
@@ -222,7 +232,6 @@ public class GameManager : MonoBehaviour
 
     private void PauseApplication(object source, EventArgs e)
     {
-
         pauseCounter++;
         
         if(pauseCounter %2 !=0)
@@ -230,7 +239,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
            playerPrefab.GetComponent<Animator>().enabled = false;
             // Do the same for enemy if active or other NPCs
-
         }
 
         else
