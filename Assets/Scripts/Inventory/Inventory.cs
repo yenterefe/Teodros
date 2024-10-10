@@ -6,7 +6,7 @@ using System;
 public class Inventory : MonoBehaviour
 {
     public static event EventHandler<InventoryItem> OnInventoryChange; // Event to notify inventory changes
-    private static List<InventoryItem> inventory = new List<InventoryItem>(); // Make this static to access globally
+    private static List<InventoryItem> inventory = new List<InventoryItem>(); // Static list to access globally
     private static Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
 
     private void OnEnable()
@@ -23,7 +23,11 @@ public class Inventory : MonoBehaviour
         Health.OnHealthCollected -= Add;
     }
 
-    public static List<InventoryItem> GetCurrentInventory() => inventory; // Static method to get the current inventory
+    // Method to get the current inventory
+    public static List<InventoryItem> GetCurrentInventory()
+    {
+        return inventory; // Return the static inventory list
+    }
 
     private void Add(object source, ItemData itemData)
     {

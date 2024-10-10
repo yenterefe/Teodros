@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject healthObject;
     [SerializeField] private GameObject inventory;
 
+    public EventHandler OnRemoveItem;
+
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
 
@@ -42,6 +44,9 @@ public class GameManager : MonoBehaviour
     private bool isRifleOn;
     private bool isEnemyTriggerEntered;
     private bool isAmmoCollected = false;
+
+    //Delete later
+    private bool isAmmoUIPressed = false;
 
     private int totalAmmunition = 5;
     private int firedAmmunition = 1;
@@ -69,11 +74,10 @@ public class GameManager : MonoBehaviour
         gameInput.OnPlayerRunningCanceled += PlayerWalking;
         gameInput.OnPausePerformed += PauseApplication;
         gameInput.OnUnPausePerformed += ResumeApplication;
+        gameInput.OnUIActionPerformed += BulletCollected;
 
         // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
-        //bullet.OnBulletCollected += BulletManager;
         Bullet.OnBulletCollected += BulletManager;
-        //health.OnHealthCollected += HealthManager;
         Health.OnHealthCollected += HealthManager;
     }
 
@@ -111,7 +115,6 @@ public class GameManager : MonoBehaviour
 
         ManageStaminaBar();
         ManagePlayerHealthBar();
-
         isPlayerAiming = playerAnimation.IsPlayerAiming();
 
         isRifleOn = playerAnimation.IsRifleModeActivated();
@@ -194,7 +197,6 @@ public class GameManager : MonoBehaviour
         return totalAmmunition;
     }
 
-
     private void SpawnEnemy()
     {
         if (isEnemyTriggerEntered && enemyTriggerBox != null)
@@ -208,11 +210,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void BulletManager(object source, ItemData data)
+    public void BulletManager(object source, ItemData data)
     {
-        if (totalAmmunition < 5 && leftBullet > 0)
+        //Don't delete
+        /*if (totalAmmunition < 5 && leftBullet > 0)
         {
-            // The rifle can only take 5 ammos and if player has more than 5, there will be some ammo left for next time. But, if the ammo is completely used it will disappear 
+            //The rifle can only take 5 ammos and if player has more than 5, there will be some ammo left for next time. But, if the ammo is completely used it will disappear 
             leftBullet -= (5 - totalAmmunition);
             totalAmmunition = 5;
         }
@@ -220,12 +223,21 @@ public class GameManager : MonoBehaviour
         if (leftBullet == 0)
         {
             ammo.SetActive(false);
-        }
+        }*/
+    }
+
+    //When pressing slot UI, should update totalBullet
+    public void BulletCollected(object source, EventArgs e)
+    {
+
+        totalAmmunition += 1;
 
     }
 
     private void HealthManager(object source, ItemData data)
     {
+        // Must refactor this code to work with the new UI inventory system
+
         if (playerHealthBar.GetComponent<Slider>().value < 100)
         {
             playerHealthBar.GetComponent<Slider>().value = 100;
@@ -239,7 +251,6 @@ public class GameManager : MonoBehaviour
         playerPrefab.GetComponent<Animator>().enabled = false;
         // Do the same for enemy if active or other NPCs
         inventory.SetActive(true);
-        Debug.Log("paused");
     }
 
     private void ResumeApplication(object source, EventArgs e)
@@ -248,6 +259,5 @@ public class GameManager : MonoBehaviour
         playerPrefab.GetComponent<Animator>().enabled = true;
         // Do the same for enemy if active or other NPCs
         inventory.SetActive(false);
-        Debug.Log("resumed");
     }
 }

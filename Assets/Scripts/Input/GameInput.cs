@@ -31,6 +31,7 @@ public class GameInput : MonoBehaviour
     public EventHandler OnPlayerRunningCanceled;
     public EventHandler OnPausePerformed;
     public EventHandler OnUnPausePerformed;
+    public EventHandler OnUIActionPerformed;
 
     private void Awake()
     {
@@ -156,7 +157,10 @@ public class GameInput : MonoBehaviour
 
     private void Select_performed(InputAction.CallbackContext obj)
     {
-        Debug.Log("Selected");
+        if(OnUIActionPerformed != null)
+        {
+            OnUIActionPerformed(this, EventArgs.Empty); 
+        }
     }
 
     private void Movement_performed1(InputAction.CallbackContext obj)

@@ -12820,7 +12820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08b1194869463240aa6d0fefec25d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPrefab: {fileID: 1793025918873043816, guid: 3aa0829ff91d115459f226a35efecae4,
+  buttonPrefab: {fileID: 31841794039157778, guid: 3aa0829ff91d115459f226a35efecae4,
     type: 3}
   parentTransform: {fileID: 634620070}
 --- !u!4 &1648149683
@@ -13592,7 +13592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385d384801b953e40a8be5054d533429, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotPrefab: {fileID: 1793025918873043816, guid: 3aa0829ff91d115459f226a35efecae4,
+  slotPrefab: {fileID: 31841794039157778, guid: 3aa0829ff91d115459f226a35efecae4,
     type: 3}
   initialSlotCount: 12
   slotsParent: {fileID: 634620070}

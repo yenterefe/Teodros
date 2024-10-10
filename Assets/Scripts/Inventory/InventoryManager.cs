@@ -53,6 +53,7 @@ public class InventoryManager : MonoBehaviour
         inventorySlots.Clear(); // Clear the active slots list
     }
 
+
     // Draws the inventory by assigning items to available slots
     public void DrawInventory(List<InventoryItem> inventory)
     {
@@ -98,7 +99,9 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                CreateInventorySlot().gameObject.SetActive(true);
+                InventorySlot newSlot = CreateInventorySlot();
+                newSlot.gameObject.SetActive(true);
+                inventorySlots.Add(newSlot);
             }
         }
     }
