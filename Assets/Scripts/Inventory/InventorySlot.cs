@@ -6,15 +6,22 @@ using TMPro;
 
 public class InventorySlot : MonoBehaviour
 {
-    public TextMeshProUGUI itemName;
-    public TextMeshProUGUI stackNumber;
-    public Image image;
+    [SerializeField] private TextMeshProUGUI itemName;
+    [SerializeField] private TextMeshProUGUI stackNumber;
+    [SerializeField] private Image image;
 
     public void ResetSlot()
     {
         itemName.enabled = false;
         stackNumber.enabled = false;
         image.enabled = false;  
+    }
+
+    public void StartSlot()
+    {
+        itemName.enabled = true;
+        stackNumber.enabled = true;
+        image.enabled = true;
     }
 
     public void DrawSlot(InventoryItem item)
@@ -24,9 +31,7 @@ public class InventorySlot : MonoBehaviour
             ResetSlot();
         }
 
-        itemName.enabled = true;
-        stackNumber.enabled = true;
-        image.enabled = true;
+        StartSlot();
 
         itemName.text = item.ItemData.itemName;
         image.sprite = item.ItemData.sprite;

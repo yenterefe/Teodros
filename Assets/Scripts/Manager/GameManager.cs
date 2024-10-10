@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject enemyTriggerBox;
     [SerializeField] private GameObject enemy;
     [SerializeField] private GameObject ammo;
-    [SerializeField] private GameObject healthObject; 
+    [SerializeField] private GameObject healthObject;
+    [SerializeField] private GameObject inventory;
   
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
@@ -233,12 +234,15 @@ public class GameManager : MonoBehaviour
     private void PauseApplication(object source, EventArgs e)
     {
         pauseCounter++;
+
+        
         
         if(pauseCounter %2 !=0)
         {
             Time.timeScale = 0;
            playerPrefab.GetComponent<Animator>().enabled = false;
             // Do the same for enemy if active or other NPCs
+            inventory.SetActive(true);
         }
 
         else
@@ -246,6 +250,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1f;
             playerPrefab.GetComponent<Animator>().enabled = true;
             // Do the same for enemy if active or other NPCs
+
+            inventory.SetActive(false);
         }
     }
 }
