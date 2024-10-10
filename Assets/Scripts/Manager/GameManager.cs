@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject ammo;
     [SerializeField] private GameObject healthObject;
     [SerializeField] private GameObject inventory;
-  
+
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
 
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     private PlayerAnimation playerAnimation;
 
-    private bool isStaminaDepleted=false;
+    private bool isStaminaDepleted = false;
     private bool recuperateStamina = false;
     private bool isPlayerAiming;
     private bool isPlayerRunning = false;
@@ -51,12 +51,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        gameInput= inputManager.GetComponent<GameInput>();  
+        gameInput = inputManager.GetComponent<GameInput>();
         playerAnimation = playerPrefab.GetComponent<PlayerAnimation>();
         player = playerObject.GetComponent<Player>();
         enemySpawner = enemyTriggerBox.GetComponent<EnemySpawner>();
-        collector= playerObject.GetComponent<Collector>();
-        bullet = ammo.GetComponent<Bullet>();  
+        collector = playerObject.GetComponent<Collector>();
+        bullet = ammo.GetComponent<Bullet>();
         health = healthObject.GetComponent<Health>();
     }
 
@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
         gameInput.OnPlayerRunningPeformed += PlayerRunning;
         gameInput.OnPlayerRunningCanceled += PlayerWalking;
         gameInput.OnPausePerformed += PauseApplication;
+        gameInput.OnUnPausePerformed += ResumeApplication;
 
         // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
         //bullet.OnBulletCollected += BulletManager;
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
         gameInput.OnPlayerRunningPeformed -= PlayerRunning;
         gameInput.OnPlayerRunningCanceled -= PlayerWalking;
         gameInput.OnPausePerformed -= PauseApplication;
+        gameInput.OnUnPausePerformed -= ResumeApplication;
 
         // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
         Bullet.OnBulletCollected -= BulletManager;
@@ -124,7 +126,7 @@ public class GameManager : MonoBehaviour
         bool isEnemySighted = player.IsEnemySighted();
         bool isPlayershooting = playerAnimation.IsRifleShot();
 
-        if(isEnemySighted && isPlayershooting)
+        if (isEnemySighted && isPlayershooting)
         {
             enemyHealthBar.GetComponent<Slider>().value = 0;
         }
@@ -142,16 +144,16 @@ public class GameManager : MonoBehaviour
 
     private void DepleteStamina(object source, EventArgs e)
     {
-        if(staminaBar.GetComponent<Slider>().value != 0 && !isPlayerAiming && !isRifleOn)
+        if (staminaBar.GetComponent<Slider>().value != 0 && !isPlayerAiming && !isRifleOn)
         {
-           isStaminaDepleted = true;
-           recuperateStamina= false;
+            isStaminaDepleted = true;
+            recuperateStamina = false;
         }
     }
 
     private void RecuperateStamina(object source, EventArgs e)
     {
-        if(staminaBar.GetComponent<Slider>().value != 100)
+        if (staminaBar.GetComponent<Slider>().value != 100)
         {
             recuperateStamina = true;
             isStaminaDepleted = false;
@@ -165,7 +167,7 @@ public class GameManager : MonoBehaviour
             staminaBar.GetComponent<Slider>().value -= depletion;
         }
 
-        if (recuperateStamina|| !isPlayerRunning)
+        if (recuperateStamina || !isPlayerRunning)
         {
             staminaBar.GetComponent<Slider>().value += recuperation;
         }
@@ -173,7 +175,7 @@ public class GameManager : MonoBehaviour
 
     private void ManagePlayerHealthBar()
     {
-        if(playerHealthBar.GetComponent<Slider>().value <=0)
+        if (playerHealthBar.GetComponent<Slider>().value <= 0)
         {
             Debug.Log("Game Over");
         }
@@ -181,7 +183,7 @@ public class GameManager : MonoBehaviour
 
     private void AmmoManager(object source, EventArgs e)
     {
-        if(isPlayerAiming)
+        if (isPlayerAiming)
         {
             totalAmmunition -= firedAmmunition;
         }
@@ -192,30 +194,30 @@ public class GameManager : MonoBehaviour
         return totalAmmunition;
     }
 
-    
+
     private void SpawnEnemy()
     {
-        if(isEnemyTriggerEntered && enemyTriggerBox != null)
+        if (isEnemyTriggerEntered && enemyTriggerBox != null)
         {
-            if(!enemy.activeInHierarchy)
+            if (!enemy.activeInHierarchy)
             {
                 enemy.SetActive(true);
                 Vector3 offset = new Vector3(0, 0, 10);
                 enemy.transform.position = enemyTriggerBox.transform.position;
             }
-        }   
+        }
     }
 
     private void BulletManager(object source, ItemData data)
     {
-       if(totalAmmunition < 5 && leftBullet>0)
+        if (totalAmmunition < 5 && leftBullet > 0)
         {
             // The rifle can only take 5 ammos and if player has more than 5, there will be some ammo left for next time. But, if the ammo is completely used it will disappear 
-            leftBullet-= (5 - totalAmmunition);
+            leftBullet -= (5 - totalAmmunition);
             totalAmmunition = 5;
         }
 
-       if(leftBullet ==0)
+        if (leftBullet == 0)
         {
             ammo.SetActive(false);
         }
@@ -224,34 +226,28 @@ public class GameManager : MonoBehaviour
 
     private void HealthManager(object source, ItemData data)
     {
-        if(playerHealthBar.GetComponent<Slider>().value <100)
+        if (playerHealthBar.GetComponent<Slider>().value < 100)
         {
             playerHealthBar.GetComponent<Slider>().value = 100;
         }
-        
+
     }
 
     private void PauseApplication(object source, EventArgs e)
     {
-        pauseCounter++;
+        Time.timeScale = 0;
+        playerPrefab.GetComponent<Animator>().enabled = false;
+        // Do the same for enemy if active or other NPCs
+        inventory.SetActive(true);
+        Debug.Log("paused");
+    }
 
-        
-        
-        if(pauseCounter %2 !=0)
-        {
-            Time.timeScale = 0;
-           playerPrefab.GetComponent<Animator>().enabled = false;
-            // Do the same for enemy if active or other NPCs
-            inventory.SetActive(true);
-        }
-
-        else
-        {
-            Time.timeScale = 1f;
-            playerPrefab.GetComponent<Animator>().enabled = true;
-            // Do the same for enemy if active or other NPCs
-
-            inventory.SetActive(false);
-        }
+    private void ResumeApplication(object source, EventArgs e)
+    {
+        Time.timeScale = 1f;
+        playerPrefab.GetComponent<Animator>().enabled = true;
+        // Do the same for enemy if active or other NPCs
+        inventory.SetActive(false);
+        Debug.Log("resumed");
     }
 }

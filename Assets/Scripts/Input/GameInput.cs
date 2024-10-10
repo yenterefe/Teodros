@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;  
+using UnityEngine.InputSystem;
 
 
 public class GameInput : MonoBehaviour
@@ -17,19 +17,20 @@ public class GameInput : MonoBehaviour
     private int weaponSwitchButtonPressed = 0;
 
     public EventHandler OnReady;
-    public EventHandler OnLightAttackPerformed; 
+    public EventHandler OnLightAttackPerformed;
     public EventHandler OnLightAttackCanceled;
-    public EventHandler OnSwitchToSwordPerformed; 
+    public EventHandler OnSwitchToSwordPerformed;
     public EventHandler OnSwitchToRiflePerformed;
-    public EventHandler OnRifleAimPerformed; 
-    public EventHandler OnRifleAimCanceled; 
-    public EventHandler OnRifleFirePerformed; 
+    public EventHandler OnRifleAimPerformed;
+    public EventHandler OnRifleAimCanceled;
+    public EventHandler OnRifleFirePerformed;
     public EventHandler OnRifleFireCanceled;
     public EventHandler OnShieldPerformed;
     public EventHandler OnShieldCanceled;
     public EventHandler OnPlayerRunningPeformed;
     public EventHandler OnPlayerRunningCanceled;
     public EventHandler OnPausePerformed;
+    public EventHandler OnUnPausePerformed;
 
     private void Awake()
     {
@@ -76,6 +77,12 @@ public class GameInput : MonoBehaviour
         inputActions.Player.Run.canceled += Run_canceled;
 
         inputActions.Player.Pause.performed += Pause_performed;
+
+        inputActions.UI.Movement.performed += Movement_performed1;
+
+        inputActions.UI.Select.performed += Select_performed;
+
+        inputActions.UI.UnPause.performed += UnPause_performed;
     }
 
     private void OnDisable()
@@ -113,19 +120,53 @@ public class GameInput : MonoBehaviour
         inputActions.Player.Run.canceled -= Run_canceled;
 
         inputActions.Player.Pause.performed -= Pause_performed;
+
+        inputActions.UI.Movement.performed -= Movement_performed1;
+
+        inputActions.UI.Select.performed -= Select_performed;
+
+        inputActions.UI.UnPause.performed -= UnPause_performed;
+    }
+
+    private void UnPause_performed(InputAction.CallbackContext obj)
+    {
+        if(OnUnPausePerformed != null)
+        {
+            OnUnPausePerformed(this, EventArgs.Empty);
+            inputActions.Player.Enable();
+            inputActions.Camera.Rotation.Enable();
+            inputActions.UI.Movement.Disable();
+            inputActions.UI.Select.Disable();
+            inputActions.UI.UnPause.Disable();
+        }
     }
 
     private void Pause_performed(InputAction.CallbackContext obj)
     {
-        if(OnPausePerformed != null)
+        if (OnPausePerformed != null)
         {
             OnPausePerformed(this, EventArgs.Empty);
+            inputActions.Player.Disable();
+            inputActions.Camera.Rotation.Disable();
+            inputActions.UI.Movement.Enable();
+            inputActions.UI.Select.Enable();
+            inputActions.UI.UnPause.Enable();
         }
+    }
+
+    private void Select_performed(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Selected");
+    }
+
+    private void Movement_performed1(InputAction.CallbackContext obj)
+    {
+        Debug.Log("Movement performed");
     }
 
     private void Run_canceled(InputAction.CallbackContext obj)
     {
-        if(OnPlayerRunningCanceled != null)
+        if (OnPlayerRunningCanceled != null)
         {
             OnPlayerRunningCanceled(this, EventArgs.Empty);
         }
@@ -142,7 +183,7 @@ public class GameInput : MonoBehaviour
 
     private void Shield_canceled(InputAction.CallbackContext obj)
     {
-       if(OnShieldCanceled != null)
+        if (OnShieldCanceled != null)
         {
             OnShieldCanceled(this, EventArgs.Empty);
         }
@@ -150,7 +191,7 @@ public class GameInput : MonoBehaviour
 
     private void Shield_performed(InputAction.CallbackContext obj)
     {
-        if(OnShieldPerformed != null)
+        if (OnShieldPerformed != null)
         {
             OnShieldPerformed(this, EventArgs.Empty);
         }
@@ -158,7 +199,7 @@ public class GameInput : MonoBehaviour
 
     private void LightAttack_canceled(InputAction.CallbackContext obj)
     {
-        if(OnLightAttackCanceled != null)
+        if (OnLightAttackCanceled != null)
         {
             OnLightAttackCanceled(this, EventArgs.Empty);
         }
@@ -174,8 +215,7 @@ public class GameInput : MonoBehaviour
 
     private void FireRifle_performed(InputAction.CallbackContext obj)
     {
-
-        if(OnRifleFirePerformed != null)
+        if (OnRifleFirePerformed != null)
         {
             OnRifleFirePerformed(this, EventArgs.Empty);
         }
@@ -186,12 +226,12 @@ public class GameInput : MonoBehaviour
         if (OnRifleAimCanceled != null)
         {
             OnRifleAimCanceled(this, EventArgs.Empty);
-        }  
+        }
     }
 
     private void RifleAim_performed(InputAction.CallbackContext obj)
     {
-        if(OnRifleAimPerformed != null)
+        if (OnRifleAimPerformed != null)
         {
             OnRifleAimPerformed(this, EventArgs.Empty);
         }
@@ -207,9 +247,9 @@ public class GameInput : MonoBehaviour
 
     private void SwitchToSword_performed(InputAction.CallbackContext obj)
     {
-        if(OnSwitchToSwordPerformed != null)
+        if (OnSwitchToSwordPerformed != null)
         {
-            OnSwitchToSwordPerformed(this,EventArgs.Empty);
+            OnSwitchToSwordPerformed(this, EventArgs.Empty);
         }
     }
 
@@ -218,8 +258,6 @@ public class GameInput : MonoBehaviour
         if (OnLightAttackPerformed != null)
         {
             OnLightAttackPerformed(this, EventArgs.Empty);
-
-
         }
     }
 
@@ -230,12 +268,12 @@ public class GameInput : MonoBehaviour
 
     private void Rotation_performed(InputAction.CallbackContext obj)
     {
-        cameraInput= obj.ReadValue<Vector2>();
+        cameraInput = obj.ReadValue<Vector2>();
     }
 
     private void Movement_canceled(InputAction.CallbackContext obj)
     {
-  
+
         moveInput = Vector2.zero;
     }
 
