@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -20,8 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject healthObject;
     [SerializeField] private GameObject inventory;
 
-    public EventHandler OnRemoveItem;
-
+    [SerializeField] private ItemData bulletData;
 
     [SerializeField] private TextMeshProUGUI ammoIndicator;
 
@@ -35,6 +32,8 @@ public class GameManager : MonoBehaviour
     private Bullet bullet;
     private Health health;
 
+    public EventHandler<ItemData> OnBulletUIPressed;
+
     private PlayerAnimation playerAnimation;
 
     private bool isStaminaDepleted = false;
@@ -44,15 +43,11 @@ public class GameManager : MonoBehaviour
     private bool isRifleOn;
     private bool isEnemyTriggerEntered;
     private bool isAmmoCollected = false;
-
-    //Delete later
     private bool isAmmoUIPressed = false;
 
     private int totalAmmunition = 5;
     private int firedAmmunition = 1;
-    private int leftBullet = 5;
-
-    private int pauseCounter = 0;
+  
 
     private void Awake()
     {
@@ -79,6 +74,7 @@ public class GameManager : MonoBehaviour
         // Get Collector from the OnTrigger method for the ICollector interface for any collectable objects.
         Bullet.OnBulletCollected += BulletManager;
         Health.OnHealthCollected += HealthManager;
+
     }
 
     private void OnDisable()
@@ -106,10 +102,10 @@ public class GameManager : MonoBehaviour
     {
         //Debug.Log($"total ammunition: {totalAmmunition} " + $"left ammo: {leftBullet}");
 
-        //Debug.Log($"Time scale value is: {Time.timeScale}");
-
         //to determine if enemy spawner is triggered
         isEnemyTriggerEntered = enemySpawner.IsEnemyTriggerEntered();
+
+        RemoveAmmoFromStack();
 
         SpawnEnemy();
 
@@ -212,37 +208,42 @@ public class GameManager : MonoBehaviour
 
     public void BulletManager(object source, ItemData data)
     {
-        //Don't delete
-        /*if (totalAmmunition < 5 && leftBullet > 0)
-        {
-            //The rifle can only take 5 ammos and if player has more than 5, there will be some ammo left for next time. But, if the ammo is completely used it will disappear 
-            leftBullet -= (5 - totalAmmunition);
-            totalAmmunition = 5;
-        }
-
-        if (leftBullet == 0)
-        {
-            ammo.SetActive(false);
-        }*/
+  
+       
+            isAmmoCollected = true;
     }
 
-    //When pressing slot UI, should update totalBullet
+    //When pressing the slot containing ammo UI, will update totalBullet
     public void BulletCollected(object source, EventArgs e)
     {
+        if(isAmmoCollected && totalAmmunition <5)
+        {
+            totalAmmunition += 1;
+            isAmmoUIPressed = true;
+            isAmmoCollected = false;
+        }
+    }
 
-        totalAmmunition += 1;
-
+    // This will trigger an event to notify the inventory to reduce stack for the ammunition 
+    public void RemoveAmmoFromStack()
+    {
+        if (isAmmoUIPressed)
+        {
+            if (OnBulletUIPressed != null)
+            {
+                OnBulletUIPressed(this, bulletData);
+            }
+        }
     }
 
     private void HealthManager(object source, ItemData data)
     {
         // Must refactor this code to work with the new UI inventory system
 
-        if (playerHealthBar.GetComponent<Slider>().value < 100)
+        /*if (playerHealthBar.GetComponent<Slider>().value < 100)
         {
             playerHealthBar.GetComponent<Slider>().value = 100;
-        }
-
+        }*/
     }
 
     private void PauseApplication(object source, EventArgs e)

@@ -5,15 +5,24 @@ using System;
 
 public class Inventory : MonoBehaviour
 {
-    public static event EventHandler<InventoryItem> OnInventoryChange; // Event to notify inventory changes
+    public static EventHandler<InventoryItem> OnInventoryChange; // Event to notify inventory changes
     private static List<InventoryItem> inventory = new List<InventoryItem>(); // Static list to access globally
     private static Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
+
+    [SerializeField] GameObject gameManagerObj;
+    private GameManager gameManager;
+
+    private void Awake()
+    {
+        gameManager = gameManagerObj.GetComponent<GameManager>();
+    }
 
     private void OnEnable()
     {
         // Subscribe to events for collecting bullets and health
         Bullet.OnBulletCollected += Add;
         Health.OnHealthCollected += Add;
+        gameManager.OnBulletUIPressed += Remove;
     }
 
     private void OnDisable()
@@ -21,6 +30,7 @@ public class Inventory : MonoBehaviour
         // Unsubscribe from events to avoid memory leaks
         Bullet.OnBulletCollected -= Add;
         Health.OnHealthCollected -= Add;
+        gameManager.OnBulletUIPressed -= Remove;
     }
 
     // Method to get the current inventory
