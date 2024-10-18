@@ -45,7 +45,7 @@ public class Inventory : MonoBehaviour
         if (itemDictionary.TryGetValue(itemData, out InventoryItem item))
         {
             item.AddToStack();
-            Debug.Log($"You collected {itemData.itemName} and total stack is {item.StackSize}");
+            //Debug.Log($"You collected {itemData.itemName} and total stack is {item.StackSize}");
             OnInventoryChange?.Invoke(this, item); // Notify the change with the updated item
         }
         else
@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
             InventoryItem newItem = new InventoryItem(itemData);
             inventory.Add(newItem);
             itemDictionary.Add(itemData, newItem);
-            Debug.Log($"You collected {itemData.itemName} and total stack is {newItem.StackSize}");
+            //Debug.Log($"You collected {itemData.itemName} and total stack is {newItem.StackSize}");
             OnInventoryChange?.Invoke(this, newItem); // Notify the change with the new item
         }
     }

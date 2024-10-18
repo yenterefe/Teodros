@@ -165,7 +165,7 @@ public class GameInput : MonoBehaviour
 
     private void Movement_performed1(InputAction.CallbackContext obj)
     {
-        Debug.Log("Movement performed");
+       //Debug.Log("Movement performed");
     }
 
     private void Run_canceled(InputAction.CallbackContext obj)

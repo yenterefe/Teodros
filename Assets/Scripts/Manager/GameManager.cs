@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections.Generic;
 
 
 public class GameManager : MonoBehaviour
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     private Collector collector;
     private Bullet bullet;
     private Health health;
+    private InventorySlot inventorySlot;
 
     public EventHandler<ItemData> OnBulletUIPressed;
 
@@ -42,12 +44,13 @@ public class GameManager : MonoBehaviour
     private bool isPlayerRunning = false;
     private bool isRifleOn;
     private bool isEnemyTriggerEntered;
-    private bool isAmmoCollected = false;
+    private bool isButtonPressed = false;
+    private bool isAmmo = false;
     private bool isAmmoUIPressed = false;
 
     private int totalAmmunition = 5;
     private int firedAmmunition = 1;
-  
+
 
     private void Awake()
     {
@@ -100,6 +103,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        Subscribe();
+
         //Debug.Log($"total ammunition: {totalAmmunition} " + $"left ammo: {leftBullet}");
 
         //to determine if enemy spawner is triggered
@@ -208,21 +213,22 @@ public class GameManager : MonoBehaviour
 
     public void BulletManager(object source, ItemData data)
     {
-  
-       
-            isAmmoCollected = true;
+
+        //Might Delete this later
+        
     }
 
     //When pressing the slot containing ammo UI, will update totalBullet
-    public void BulletCollected(object source, EventArgs e)
+    private void BulletCollected(object source, EventArgs e)
     {
-        if(isAmmoCollected && totalAmmunition <5)
+        if (isButtonPressed && isAmmo && totalAmmunition < 5)
         {
             totalAmmunition += 1;
+
             isAmmoUIPressed = true;
-            isAmmoCollected = false;
         }
     }
+
 
     // This will trigger an event to notify the inventory to reduce stack for the ammunition 
     public void RemoveAmmoFromStack()
@@ -260,5 +266,28 @@ public class GameManager : MonoBehaviour
         playerPrefab.GetComponent<Animator>().enabled = true;
         // Do the same for enemy if active or other NPCs
         inventory.SetActive(false);
+    }
+
+    //This will subscribe once the prefab slots and buttons have been instantiated 
+    private void Subscribe()
+    {
+        var prefabs = FindObjectsOfType<InventorySlot>();
+
+        foreach (var prefab in prefabs)
+        {
+            prefab.GetComponent<InventorySlot>().OnButtonClicked += IsButtonClicked;
+
+            if(prefab.GetComponent<InventorySlot>().ItemNameMethod() == "Ammo")
+            {
+                isAmmo = true;
+            }
+
+        }
+    }
+
+    //This will indicate if button is pressed!
+    void IsButtonClicked(object receiver, EventArgs e)
+    {
+        isButtonPressed = true;
     }
 }
